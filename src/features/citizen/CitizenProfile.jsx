@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 import { User, MapPin, Phone, Mail, Save, X, Camera } from 'lucide-react';
 import { loginSuccess } from '../auth/authSlice';
 import { calculateAge } from '../../utils/calculateAge';
+import PhoneInput from '../../components/PhoneInput';
 
 const CitizenProfile = () => {
     const { user } = useSelector((state) => state.auth);
@@ -19,11 +20,11 @@ const CitizenProfile = () => {
         occupation: 'Software Engineer',
         bloodGroup: 'O+',
         nationality: 'Citizen',
-        fatherName: 'Robert Doe',
-        motherName: 'Mary Doe',
+        fatherName: 'Vishva',
+        motherName: 'Vidhnu',
         maritalStatus: 'Single',
-        name: user?.name || 'User',
-        email: user?.email || 'user@example.com',
+        name: user?.name || 'Balaji',
+        email: user?.email || 'balaji@example.com',
     });
 
     const handleChange = (e) => {
@@ -32,12 +33,12 @@ const CitizenProfile = () => {
     };
 
     const handleSave = () => {
-        
+
         console.log('Saving profile:', formData);
 
         dispatch(loginSuccess({
             user: { ...user, name: formData.name, email: formData.email },
-            token: localStorage.getItem('token'), 
+            token: localStorage.getItem('token'),
             role: 'CITIZEN'
         }));
 
@@ -45,12 +46,12 @@ const CitizenProfile = () => {
     };
 
     const handleCancel = () => {
-        
+
         setIsEditing(false);
     };
 
     const handlePhotoUpload = () => {
-        
+
         console.log('Opening photo upload...');
     };
 
@@ -73,15 +74,15 @@ const CitizenProfile = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
+
                 <div className="md:col-span-1">
                     <Card className="text-center h-full">
-                        
+
                         <div className="relative w-32 h-32 mx-auto mb-4 group">
                             <div className="w-full h-full bg-red-100 rounded-full flex items-center justify-center text-red-500 overflow-hidden">
                                 <User size={64} />
                             </div>
-                            
+
                             <button
                                 onClick={handlePhotoUpload}
                                 className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
@@ -89,7 +90,7 @@ const CitizenProfile = () => {
                                 <Camera size={24} className="text-white mb-1" />
                                 <span className="text-white text-xs font-medium">Change Photo</span>
                             </button>
-                            
+
                             <div className="absolute bottom-0 right-0 p-2 bg-red-600 rounded-full shadow-lg cursor-pointer hover:bg-red-700 transition-colors" onClick={handlePhotoUpload}>
                                 <Camera size={16} className="text-white" />
                             </div>
@@ -132,11 +133,10 @@ const CitizenProfile = () => {
                             <div className="flex items-center text-sm text-gray-600">
                                 <Phone size={16} className="mr-2 text-red-500" />
                                 {isEditing ? (
-                                    <input
-                                        name="phone"
+                                    <PhoneInput
                                         value={formData.phone}
-                                        onChange={handleChange}
-                                        className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                        onChange={(phone) => setFormData(prev => ({ ...prev, phone }))}
+                                        className="!w-full"
                                     />
                                 ) : formData.phone}
                             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, Bell, Search, ChevronDown, User, LogOut, Settings, Home, Users, FileText, Activity } from 'lucide-react';
+import { Menu, Search, ChevronDown, User, LogOut, Settings, Home, Users, FileText, Activity } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
@@ -11,7 +11,6 @@ const Header = ({ onMenuClick }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [profileOpen, setProfileOpen] = useState(false);
-    const [notificationsOpen, setNotificationsOpen] = useState(false);
 
     const handleLogout = () => {
         dispatch(logout());
@@ -41,11 +40,7 @@ const Header = ({ onMenuClick }) => {
 
     const currentNavItems = navItems[role] || [];
 
-    const notifications = [
-        { id: 1, text: 'Birth Certificate Approved', time: '2 hrs ago', unread: true },
-        { id: 2, text: 'New Login Detected', time: '1 day ago', unread: false },
-        { id: 3, text: 'Profile Update Success', time: '2 days ago', unread: false },
-    ];
+
 
     return (
         <header className="sticky top-0 z-30 bg-red-800 text-white shadow-md">
@@ -56,9 +51,9 @@ const Header = ({ onMenuClick }) => {
                         <div className="flex-shrink-0 flex items-center">
                             <Link to="/" className="flex items-center gap-2">
                                 <div className="bg-yellow-500 p-1.5 rounded text-red-900 shadow-sm">
-                                    <div className="font-bold text-xl leading-none">C</div>
+                                    <div className="font-bold text-xl leading-none"><Logo /></div>
                                 </div>
-                                <span className="hidden md:block font-bold text-xl tracking-tight text-white">CivicID</span>
+
                             </Link>
                         </div>
                         <div className="hidden lg:ml-8 lg:flex lg:space-x-4">
@@ -98,32 +93,7 @@ const Header = ({ onMenuClick }) => {
 
 
 
-                        <div className="relative">
-                            <button
-                                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                                className="bg-red-800 p-1 rounded-full text-red-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-800 focus:ring-white"
-                            >
-                                <span className="sr-only">View notifications</span>
-                                <Bell className="h-6 w-6" />
-                                <span className="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-yellow-400 ring-2 ring-red-800"></span>
-                            </button>
-                            {notificationsOpen && (
-                                <>
-                                    <div className="fixed inset-0 z-10" onClick={() => setNotificationsOpen(false)}></div>
-                                    <div className="absolute right-0 z-20 w-80 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                                        <div className="px-4 py-3 border-b border-gray-100">
-                                            <p className="text-sm font-medium text-gray-900">Notifications</p>
-                                        </div>
-                                        {notifications.map((n) => (
-                                            <div key={n.id} className="px-4 py-3 border-b border-gray-50 text-sm text-gray-700 hover:bg-gray-50">
-                                                {n.text}
-                                                <p className="text-xs text-gray-400 mt-1">{n.time}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </>
-                            )}
-                        </div>
+
 
                         <div className="relative ml-3">
                             <div className="flex items-center gap-3">

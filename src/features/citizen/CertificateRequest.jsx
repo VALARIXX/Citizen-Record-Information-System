@@ -16,29 +16,29 @@ const CertificateRequest = () => {
         phone: '',
         phoneCountry: '+91',
         notes: '',
-        
+
         childName: '',
         childDob: '',
         placeOfBirth: '',
         fatherName: '',
         motherName: '',
         hospitalName: '',
-        
+
         deceasedName: '',
         dateOfDeath: '',
         placeOfDeath: '',
         causeOfDeath: '',
         relationToDeceased: '',
-        
+
         annualIncome: '',
         sourceOfIncome: '',
         employerName: '',
         employmentType: '',
-        
+
         communityName: '',
         subCaste: '',
         religion: '',
-        
+
         currentAddress: '',
         durationOfResidence: '',
         propertyOwnership: ''
@@ -61,7 +61,7 @@ const CertificateRequest = () => {
         };
         setCertificates([...certificates, newCert]);
         setIsModalOpen(false);
-        
+
         setRequestData({
             type: 'Birth Certificate',
             purpose: '',
@@ -114,7 +114,6 @@ const CertificateRequest = () => {
                                 label="Child's Full Name"
                                 value={requestData.childName}
                                 onChange={(e) => setRequestData({ ...requestData, childName: e.target.value })}
-                                placeholder="Full name of the child"
                                 required
                             />
                             <div>
@@ -131,28 +130,24 @@ const CertificateRequest = () => {
                                 label="Place of Birth"
                                 value={requestData.placeOfBirth}
                                 onChange={(e) => setRequestData({ ...requestData, placeOfBirth: e.target.value })}
-                                placeholder="City/Town of birth"
                                 required
                             />
                             <Input
                                 label="Hospital/Address"
                                 value={requestData.hospitalName}
                                 onChange={(e) => setRequestData({ ...requestData, hospitalName: e.target.value })}
-                                placeholder="Hospital or birth address"
                                 required
                             />
                             <Input
                                 label="Father's Name"
                                 value={requestData.fatherName}
                                 onChange={(e) => setRequestData({ ...requestData, fatherName: e.target.value })}
-                                placeholder="Father's full name"
                                 required
                             />
                             <Input
                                 label="Mother's Name"
                                 value={requestData.motherName}
                                 onChange={(e) => setRequestData({ ...requestData, motherName: e.target.value })}
-                                placeholder="Mother's full name"
                                 required
                             />
                         </div>
@@ -168,7 +163,6 @@ const CertificateRequest = () => {
                                 label="Deceased's Full Name"
                                 value={requestData.deceasedName}
                                 onChange={(e) => setRequestData({ ...requestData, deceasedName: e.target.value })}
-                                placeholder="Full name of the deceased"
                                 required
                             />
                             <div>
@@ -185,21 +179,18 @@ const CertificateRequest = () => {
                                 label="Place of Death"
                                 value={requestData.placeOfDeath}
                                 onChange={(e) => setRequestData({ ...requestData, placeOfDeath: e.target.value })}
-                                placeholder="Location where death occurred"
                                 required
                             />
                             <Input
                                 label="Cause of Death"
                                 value={requestData.causeOfDeath}
                                 onChange={(e) => setRequestData({ ...requestData, causeOfDeath: e.target.value })}
-                                placeholder="Medical cause of death"
                                 required
                             />
                             <Input
                                 label="Your Relation to Deceased"
                                 value={requestData.relationToDeceased}
                                 onChange={(e) => setRequestData({ ...requestData, relationToDeceased: e.target.value })}
-                                placeholder="e.g., Son, Daughter, Spouse"
                                 required
                             />
                         </div>
@@ -215,7 +206,6 @@ const CertificateRequest = () => {
                                 label="Annual Income (₹)"
                                 value={requestData.annualIncome}
                                 onChange={(e) => setRequestData({ ...requestData, annualIncome: e.target.value })}
-                                placeholder="e.g., 500000"
                                 type="number"
                                 required
                             />
@@ -240,7 +230,6 @@ const CertificateRequest = () => {
                                 label="Employer/Business Name"
                                 value={requestData.employerName}
                                 onChange={(e) => setRequestData({ ...requestData, employerName: e.target.value })}
-                                placeholder="Company or business name"
                             />
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
@@ -270,14 +259,12 @@ const CertificateRequest = () => {
                                 label="Community/Caste Name"
                                 value={requestData.communityName}
                                 onChange={(e) => setRequestData({ ...requestData, communityName: e.target.value })}
-                                placeholder="Your community or caste"
                                 required
                             />
                             <Input
                                 label="Sub-Caste (if applicable)"
                                 value={requestData.subCaste}
                                 onChange={(e) => setRequestData({ ...requestData, subCaste: e.target.value })}
-                                placeholder="Sub-caste name"
                             />
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Religion</label>
@@ -312,7 +299,6 @@ const CertificateRequest = () => {
                                     value={requestData.currentAddress}
                                     onChange={(e) => setRequestData({ ...requestData, currentAddress: e.target.value })}
                                     rows={2}
-                                    placeholder="Full residential address"
                                     className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                                     required
                                 />
@@ -423,7 +409,6 @@ const CertificateRequest = () => {
                         label="Purpose of Request"
                         value={requestData.purpose}
                         onChange={(e) => setRequestData({ ...requestData, purpose: e.target.value })}
-                        placeholder="e.g., School admission, Bank loan"
                         required
                     />
 
@@ -444,16 +429,13 @@ const CertificateRequest = () => {
                         label="Delivery Address"
                         value={requestData.deliveryAddress}
                         onChange={(e) => setRequestData({ ...requestData, deliveryAddress: e.target.value })}
-                        placeholder="Complete postal address"
                         required
                     />
 
                     <PhoneInput
                         label="Contact Phone"
                         value={requestData.phone}
-                        countryCode={requestData.phoneCountry}
                         onChange={(val) => setRequestData({ ...requestData, phone: val })}
-                        onCountryChange={(code) => setRequestData({ ...requestData, phoneCountry: code })}
                         required
                     />
 

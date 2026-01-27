@@ -12,9 +12,9 @@ const UserManagement = () => {
     const [selectedUser, setSelectedUser] = useState(null);
 
     const [users, setUsers] = useState([
-        { id: 1, name: 'Officer Smith', email: 'officer@civic.id', role: 'OFFICER', status: 'Active' },
-        { id: 2, name: 'Admin User', email: 'admin@civic.id', role: 'ADMIN', status: 'Active' },
-        { id: 3, name: 'Clerk Johnson', email: 'clerk@civic.id', role: 'OFFICER', status: 'Inactive' },
+        { id: 1, name: 'Abdul', email: 'abdul@civic.id', role: 'OFFICER', status: 'Active' },
+        { id: 2, name: 'Gokul', email: 'gokul@civic.id', role: 'ADMIN', status: 'Active' },
+        { id: 3, name: 'Balaji', email: 'balaji@civic.id', role: 'OFFICER', status: 'Inactive' },
     ]);
 
     const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'OFFICER' });
@@ -133,7 +133,6 @@ const UserManagement = () => {
                         label="Full Name"
                         value={newUser.name}
                         onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                        placeholder="John Doe"
                         required
                     />
                     <Input
@@ -141,7 +140,6 @@ const UserManagement = () => {
                         type="email"
                         value={newUser.email}
                         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                        placeholder="john@example.com"
                         required
                     />
                     <div>
@@ -152,7 +150,6 @@ const UserManagement = () => {
                                 type="password"
                                 value={newUser.password}
                                 onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                                placeholder="Create password"
                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                                 required
                             />
@@ -197,7 +194,6 @@ const UserManagement = () => {
                             type="password"
                             value={editUser.password}
                             onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
-                            placeholder="••••••••"
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
                         />
                     </div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../features/auth/authSlice';
 import { Layers, ShieldCheck, ArrowRight, UserPlus, LogIn, CheckCircle, X } from 'lucide-react';
 import Logo from '../components/Logo';
+import PhoneInput from '../components/PhoneInput';
 
 const LandingPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(true);
@@ -90,7 +91,7 @@ const LandingPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-            
+
             <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-red-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <Logo />
@@ -113,7 +114,7 @@ const LandingPage = () => {
                             </button>
                         </div>
                     </nav>
-                    
+
                     <div className="md:hidden flex gap-2">
                         <button
                             onClick={() => handleShowAuth(true)}
@@ -209,7 +210,7 @@ const LandingPage = () => {
 
                             <div className="p-8">
                                 {isLoginMode ? (
-                                    
+
                                     <form onSubmit={handleLogin} className="space-y-5">
                                         <div className="space-y-1">
                                             <label className="text-sm font-medium text-gray-700">Email Address</label>
@@ -219,7 +220,6 @@ const LandingPage = () => {
                                                 value={loginEmail}
                                                 onChange={(e) => setLoginEmail(e.target.value)}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                placeholder="citizen@valarixx.gov"
                                             />
                                         </div>
                                         <div className="space-y-1">
@@ -230,7 +230,6 @@ const LandingPage = () => {
                                                 value={loginPassword}
                                                 onChange={(e) => setLoginPassword(e.target.value)}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                placeholder="••••••••"
                                             />
                                         </div>
 
@@ -248,7 +247,7 @@ const LandingPage = () => {
                                         </div>
                                     </form>
                                 ) : (
-                                    
+
                                     <form onSubmit={handleRegister} className="space-y-4">
                                         <div className="space-y-1">
                                             <label className="text-sm font-medium text-gray-700">Full Name</label>
@@ -259,7 +258,6 @@ const LandingPage = () => {
                                                 value={registerData.name}
                                                 onChange={handleRegisterChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                placeholder="John Doe"
                                             />
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
@@ -272,21 +270,14 @@ const LandingPage = () => {
                                                     value={registerData.email}
                                                     onChange={handleRegisterChange}
                                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                    placeholder="email@example.com"
                                                 />
                                             </div>
                                             <div className="space-y-1">
                                                 <label className="text-sm font-medium text-gray-700">Phone</label>
-                                                <input
-                                                    type="tel"
-                                                    name="phone"
-                                                    required
+                                                <PhoneInput
                                                     value={registerData.phone}
-                                                    onChange={handleRegisterChange}
-                                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                                    title="Phone number format: 123-456-7890"
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                    placeholder="123-456-7890"
+                                                    onChange={(phone) => setRegisterData(prev => ({ ...prev, phone }))}
+                                                    required
                                                 />
                                             </div>
                                         </div>
@@ -299,7 +290,6 @@ const LandingPage = () => {
                                                 value={registerData.password}
                                                 onChange={handleRegisterChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                placeholder="Create a strong password"
                                             />
                                         </div>
 

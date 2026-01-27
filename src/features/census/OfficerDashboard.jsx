@@ -16,9 +16,9 @@ const OfficerDashboard = () => {
     ];
 
     const upcomingTasks = [
-        { id: 1, type: 'Birth Certificate', citizen: 'John Doe', status: 'Verification Pending', time: '1 hr ago' },
-        { id: 2, type: 'Death Certificate', citizen: 'Jane Smith', status: 'Ready for Review', time: '3 hrs ago' },
-        { id: 3, type: 'Marriage Certificate', citizen: 'Robert Johnson', status: 'In Progress', time: '5 hrs ago' },
+        { id: 1, type: 'Birth Certificate', citizen: 'Arjun', status: 'Verification Pending', time: '1 hr ago' },
+        { id: 2, type: 'Death Certificate', citizen: 'Gokul', status: 'Ready for Review', time: '3 hrs ago' },
+        { id: 3, type: 'Marriage Certificate', citizen: 'Praveen', status: 'In Progress', time: '5 hrs ago' },
     ];
 
     return (
