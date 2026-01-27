@@ -20,7 +20,7 @@ const AdminDashboard = () => {
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-800 to-red-900 p-8 text-white shadow-xl">
                 <div className="relative z-10">
                     <h1 className="text-3xl font-bold text-yellow-500">System Control Center</h1>
-                    <p className="mt-2 text-red-100 max-w-xl">
+                    <p className="mt-2 text-red-50 max-w-xl">
                         Welcome, Administrator {user?.name}. You have full access to system configuration,
                         user management, and high-level analytics.
                     </p>
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
                         <Button onClick={() => navigate('/admin/users')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
                             <UserPlus size={18} className="mr-2" /> Manage Users
                         </Button>
-                        <Button onClick={() => navigate('/admin/analytics')} variant="outline" className="text-red-900 border-red-100 hover:bg-red-50">
+                        <Button onClick={() => navigate('/admin/analytics')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
                             <BarChart3 size={18} className="mr-2" /> Analytics Overview
                         </Button>
                     </div>

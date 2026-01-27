@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tailwind:init": "tailwindcss init -p"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
@@ -19,7 +20,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",
-    "react-leaflet": "^5.0.0",
+    "react-leaflet": "^5.0.0", 
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.12.0",
     "recharts": "^3.6.0",
@@ -42,5 +43,18 @@
     "tailwindcss": "^4.1.18",
     "vite": "^7.2.4",
     "vitest": "^4.0.17"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VALARIXX/Citizen-Record-Information-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VALARIXX/Citizen-Record-Information-System/issues"
+  },
+  "homepage": "https://github.com/VALARIXX/Citizen-Record-Information-System#readme"
 }
