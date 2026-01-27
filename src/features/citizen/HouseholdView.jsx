@@ -22,10 +22,10 @@ const HouseholdView = () => {
     });
 
     const [members, setMembers] = useState([
-        { id: 1, name: 'John Doe', relation: 'Head of Household', age: 34, gender: 'Male', status: 'Active', avatar: 'JD' },
-        { id: 2, name: 'Jane Doe', relation: 'Spouse', age: 32, gender: 'Female', status: 'Active', avatar: 'JD' },
-        { id: 3, name: 'Michael Doe', relation: 'Son', age: 8, gender: 'Male', status: 'Active', avatar: 'MD' },
-        { id: 4, name: 'Sarah Doe', relation: 'Daughter', age: 5, gender: 'Female', status: 'Active', avatar: 'SD' },
+        { id: 1, name: 'Arjun', relation: 'Head of Household', age: 34, gender: 'Male', status: 'Active', avatar: 'AR' },
+        { id: 2, name: 'Gokul', relation: 'Spouse', age: 32, gender: 'Male', status: 'Active', avatar: 'GK' },
+        { id: 3, name: 'Praveen', relation: 'Son', age: 8, gender: 'Male', status: 'Active', avatar: 'PR' },
+        { id: 4, name: 'Kishore', relation: 'Daughter', age: 5, gender: 'Male', status: 'Active', avatar: 'KS' },
     ]);
 
     const household = {
@@ -68,7 +68,7 @@ const HouseholdView = () => {
                             <Home size={28} />
                         </div>
                         <div>
-                            <h2 className="text-lg font-bold text-gray-900">The Doe Family</h2>
+                            <h2 className="text-lg font-bold text-gray-900">The Arjun Family</h2>
                             <p className="text-sm text-gray-600">{household.address}</p>
                         </div>
                     </div>
@@ -131,7 +131,6 @@ const HouseholdView = () => {
                         label="Full Name"
                         value={newMember.name}
                         onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-                        placeholder="e.g. Baby Doe"
                         required
                     />
 
@@ -181,7 +180,6 @@ const HouseholdView = () => {
                             type="number"
                             value={newMember.age}
                             onChange={(e) => setNewMember({ ...newMember, age: e.target.value })}
-                            placeholder="e.g. 25"
                             required
                         />
                     </div>
@@ -189,16 +187,13 @@ const HouseholdView = () => {
                     <PhoneInput
                         label="Contact Phone"
                         value={newMember.phone}
-                        countryCode={newMember.phoneCountry}
                         onChange={(val) => setNewMember({ ...newMember, phone: val })}
-                        onCountryChange={(code) => setNewMember({ ...newMember, phoneCountry: code })}
                     />
 
                     <Input
                         label="ID Number (Aadhaar/Passport)"
                         value={newMember.idNumber}
                         onChange={(e) => setNewMember({ ...newMember, idNumber: e.target.value })}
-                        placeholder="XXXX-XXXX-XXXX"
                     />
 
                     <div className="pt-4 flex justify-end gap-3">

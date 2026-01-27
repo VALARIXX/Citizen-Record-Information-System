@@ -9,10 +9,10 @@ const ApplicationProcessing = () => {
     const [selectedApp, setSelectedApp] = useState(null);
 
     const [applications, setApplications] = useState([
-        { id: 'APP-001', applicant: 'Alice Johnson', type: 'Birth Certificate', date: '2023-11-20', status: 'Pending' },
-        { id: 'APP-002', applicant: 'Bob Smith', type: 'Address Update', date: '2023-11-19', status: 'Verified' },
-        { id: 'APP-003', applicant: 'Charlie Brown', type: 'Death Certificate', date: '2023-11-18', status: 'Rejected' },
-        { id: 'APP-004', applicant: 'Diana Prince', type: 'Income Certificate', date: '2023-11-17', status: 'Pending' },
+        { id: 'APP-001', applicant: 'Kishore', type: 'Birth Certificate', date: '2023-11-20', status: 'Pending' },
+        { id: 'APP-002', applicant: 'Vishva', type: 'Address Update', date: '2023-11-19', status: 'Verified' },
+        { id: 'APP-003', applicant: 'Vidhnu', type: 'Death Certificate', date: '2023-11-18', status: 'Rejected' },
+        { id: 'APP-004', applicant: 'Balaji', type: 'Income Certificate', date: '2023-11-17', status: 'Pending' },
     ]);
 
     const handleViewDetails = (app) => {

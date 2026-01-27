@@ -19,8 +19,8 @@ const EnrollmentForm = () => {
                             <UserPlus size={18} className="mr-2" /> Personal Information
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="First Name" id="firstName" placeholder="John" />
-                            <Input label="Last Name" id="lastName" placeholder="Doe" />
+                            <Input label="First Name" id="firstName" />
+                            <Input label="Last Name" id="lastName" />
                             <Input label="Date of Birth" id="dob" type="date" />
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
@@ -37,7 +37,7 @@ const EnrollmentForm = () => {
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
                         <h3 className="text-md font-medium text-gray-900 mb-2">Residency Details</h3>
                         <div className="grid grid-cols-1 gap-6">
-                            <Input label="Street Address" id="address" placeholder="123 Main St" />
+                            <Input label="Street Address" id="address" />
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <Input label="City" id="city" />
                                 <Input label="State" id="state" />

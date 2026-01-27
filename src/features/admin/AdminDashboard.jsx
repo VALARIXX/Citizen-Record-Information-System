@@ -28,7 +28,7 @@ const AdminDashboard = () => {
                         <Button onClick={() => navigate('/admin/users')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
                             <UserPlus size={18} className="mr-2" /> Manage Users
                         </Button>
-                        <Button onClick={() => navigate('/admin/analytics')} variant="outline" className="text-red-900 border-red-100 hover:bg-red-50">
+                        <Button onClick={() => navigate('/admin/analytics')} variant="outline" className="text-red-900 border-yellow-100 hover:bg-yellow-50">
                             <BarChart3 size={18} className="mr-2" /> Analytics Overview
                         </Button>
                     </div>

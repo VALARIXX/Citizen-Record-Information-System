@@ -15,10 +15,10 @@ const RegistrySearch = () => {
     const [editData, setEditData] = useState({ name: '', address: '', status: '' });
 
     const [citizens, setCitizens] = useState([
-        { id: 'CID-1001-8821', name: 'John Doe', address: '123 Main St, Springfield', status: 'Active', dob: '1990-05-15', gender: 'Male', phone: '+91 9876543210' },
-        { id: 'CID-1002-9932', name: 'Jane Smith', address: '456 Oak Ave, Metropolis', status: 'Moved', dob: '1985-11-22', gender: 'Female', phone: '+91 8765432109' },
-        { id: 'CID-1003-7744', name: 'Robert Johnson', address: '789 Pine Ln, Gotham', status: 'Deceased', dob: '1950-02-10', gender: 'Male', phone: '+91 7654321098' },
-        { id: 'CID-1004-5511', name: 'Emily Davis', address: '321 Elm St, Star City', status: 'Active', dob: '1995-08-30', gender: 'Female', phone: '+91 6543210987' },
+        { id: 'CID-1001-8821', name: 'Arjun', address: '123 Main St, Springfield', status: 'Active', dob: '1990-05-15', gender: 'Male', phone: '+91 9876543210' },
+        { id: 'CID-1002-9932', name: 'Gokul', address: '456 Oak Ave, Metropolis', status: 'Moved', dob: '1985-11-22', gender: 'Male', phone: '+91 8765432109' },
+        { id: 'CID-1003-7744', name: 'Praveen', address: '789 Pine Ln, Gotham', status: 'Deceased', dob: '1950-02-10', gender: 'Male', phone: '+91 7654321098' },
+        { id: 'CID-1004-5511', name: 'Kishore', address: '321 Elm St, Star City', status: 'Active', dob: '1995-08-30', gender: 'Male', phone: '+91 6543210987' },
     ]);
 
     const filteredCitizens = citizens.filter(c =>
@@ -62,7 +62,7 @@ const RegistrySearch = () => {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                     <input
                         type="text"
-                        placeholder="Search by Name or ID..."
+                        placeholder=""
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
