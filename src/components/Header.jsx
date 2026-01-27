@@ -63,7 +63,7 @@ const Header = ({ onMenuClick }) => {
                         </div>
                         <div className="hidden lg:ml-8 lg:flex lg:space-x-4">
                             {currentNavItems.map((item) => {
-                                
+
                                 const isDashboard = item.path === '/citizen' || item.path === '/census' || item.path === '/admin';
                                 const isActive = isDashboard
                                     ? location.pathname === item.path
@@ -85,9 +85,9 @@ const Header = ({ onMenuClick }) => {
                     </div>
 
                     <div className="flex items-center lg:hidden">
-                        
+
                         <button
-                            onClick={() => setProfileOpen(!profileOpen)} 
+                            onClick={() => setProfileOpen(!profileOpen)}
                             className="p-2 rounded-md text-red-200 hover:text-white hover:bg-red-700 focus:outline-none"
                         >
                             <Menu className="h-6 w-6" />
@@ -95,17 +95,8 @@ const Header = ({ onMenuClick }) => {
                     </div>
 
                     <div className="hidden lg:flex lg:items-center lg:ml-4 gap-4">
-                        
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <Search className="h-4 w-4 text-red-300" />
-                            </div>
-                            <input
-                                className="block w-full text-red-900 bg-red-700 border border-transparent rounded-full pl-10 pr-3 py-1.5 placeholder-red-300 focus:outline-none focus:bg-white focus:text-gray-900 focus:ring-2 focus:ring-yellow-500 sm:text-sm transition-all duration-200 w-48 focus:w-64"
-                                placeholder="Search records..."
-                                type="search"
-                            />
-                        </div>
+
+
 
                         <div className="relative">
                             <button

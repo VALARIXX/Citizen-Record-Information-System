@@ -15,6 +15,8 @@ import UserManagement from './features/admin/UserManagement';
 import SystemLogs from './features/admin/SystemLogs';
 import AdminProfile from './features/admin/AdminProfile';
 import OfficerProfile from './features/census/OfficerProfile';
+import OfficerDashboard from './features/census/OfficerDashboard';
+import AdminDashboard from './features/admin/AdminDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const router = createBrowserRouter([
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
                 path: 'census',
                 element: <ProtectedRoute allowedRoles={['OFFICER']} />,
                 children: [
-                    { path: '', element: <RegistrySearch /> },
+                    { path: '', element: <OfficerDashboard /> },
                     { path: 'search', element: <RegistrySearch /> },
                     { path: 'enroll', element: <EnrollmentForm /> },
                     { path: 'tasks', element: <ApplicationProcessing /> },
@@ -53,7 +55,7 @@ const router = createBrowserRouter([
                 path: 'admin',
                 element: <ProtectedRoute allowedRoles={['ADMIN']} />,
                 children: [
-                    { path: '', element: <AnalyticsDashboard /> },
+                    { path: '', element: <AdminDashboard /> },
                     { path: 'analytics', element: <AnalyticsDashboard /> },
                     { path: 'users', element: <UserManagement /> },
                     { path: 'logs', element: <SystemLogs /> },

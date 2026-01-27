@@ -23,7 +23,7 @@ const CitizenDashboard = () => {
 
     return (
         <div className="space-y-8">
-            
+
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-800 to-red-900 p-8 text-white shadow-xl">
                 <div className="relative z-10">
                     <h1 className="text-3xl font-bold text-yellow-500">Welcome back, {user?.name}!</h1>
@@ -40,7 +40,7 @@ const CitizenDashboard = () => {
                         </Button>
                     </div>
                 </div>
-                
+
                 <div className="absolute top-0 right-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
                 <div className="absolute bottom-0 right-20 -mb-20 h-40 w-40 rounded-full bg-yellow-500/20 blur-2xl"></div>
             </div>
@@ -62,7 +62,7 @@ const CitizenDashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
+
                 <div className="lg:col-span-2">
                     <Card title="Civic Information" className="h-full border-0 shadow-soft">
                         <div className="space-y-6">
@@ -121,11 +121,7 @@ const CitizenDashboard = () => {
                                 ))}
                             </ul>
                         </div>
-                        <div className="mt-6 pt-4 border-t border-gray-100">
-                            <Link to="/citizen/profile" className="flex items-center justify-center text-sm font-medium text-red-700 hover:text-red-800">
-                                View full history <ArrowRight size={16} className="ml-1" />
-                            </Link>
-                        </div>
+
                     </Card>
                 </div>
             </div>
