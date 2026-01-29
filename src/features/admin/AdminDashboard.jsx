@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Shield, Users, Activity, Settings, BarChart3, ArrowRight, UserPlus, FileSearch } from 'lucide-react';
+import { FaShieldAlt, FaUsers, FaActivity, FaCog, FaChartBar, FaArrowRight, FaUserPlus, FaSearch } from 'react-icons/fa';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,9 +10,9 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
 
     const stats = [
-        { title: 'Total Users', value: '4,291', color: 'text-indigo-700', bg: 'bg-indigo-50', icon: Users },
-        { title: 'System Health', value: '99.9%', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: Activity },
-        { title: 'Active Officers', value: '42', color: 'text-red-700', bg: 'bg-red-50', icon: Shield },
+        { title: 'Total Users', value: '1,284', icon: FaUsers, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { title: 'System Health', value: '99.9%', icon: FaActivity, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { title: 'Security Alerts', value: '0', icon: FaShieldAlt, color: 'text-red-600', bg: 'bg-red-50' },
     ];
 
     return (
@@ -26,10 +26,10 @@ const AdminDashboard = () => {
                     </p>
                     <div className="mt-6 flex gap-3">
                         <Button onClick={() => navigate('/admin/users')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
-                            <UserPlus size={18} className="mr-2" /> Manage Users
+                            <FaUserPlus size={20} className="mr-2" /> Manage Users
                         </Button>
                         <Button onClick={() => navigate('/admin/analytics')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
-                            <BarChart3 size={18} className="mr-2" /> Analytics Overview
+                            <FaChartBar size={18} className="mr-2" /> Analytics Overview
                         </Button>
                     </div>
                 </div>
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
                                 <p className="mt-2 text-3xl font-bold text-gray-900">{stat.value}</p>
                             </div>
                             <div className={`p-3 rounded-xl ${stat.bg} ${stat.color}`}>
-                                <stat.icon size={24} strokeWidth={2} />
+                                <stat.icon size={24} />
                             </div>
                         </div>
                     </Card>
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
                     <Card title="System Performance Summary" className="border-0 shadow-soft">
                         <div className="h-64 flex items-center justify-center bg-gray-50 rounded-xl border border-dashed border-gray-300">
                             <div className="text-center">
-                                <BarChart3 size={48} className="mx-auto text-gray-300 mb-2" />
+                                <FaChartBar size={48} className="mx-auto text-gray-300 mb-2" />
                                 <p className="text-gray-500 font-medium">Monthly Activity Trends Hub</p>
                                 <button onClick={() => navigate('/admin/analytics')} className="mt-4 text-red-700 font-bold hover:underline">Open Analytics Board</button>
                             </div>
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
                         </div>
                         <div className="mt-6 pt-4 border-t border-gray-100">
                             <Link to="/admin/logs" className="flex items-center justify-center text-sm font-medium text-red-700 hover:text-red-800">
-                                View all logs <ArrowRight size={16} className="ml-1" />
+                                View all logs <FaArrowRight size={16} className="ml-1" />
                             </Link>
                         </div>
                     </Card>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import { User, MapPin, Phone, Mail, Save, X, Camera } from 'lucide-react';
+import { FaUser, FaMapMarkerAlt, FaPhone, FaEnvelope, FaSave, FaTimes, FaCamera } from 'react-icons/fa';
 import { loginSuccess } from '../auth/authSlice';
 import { calculateAge } from '../../utils/calculateAge';
 import PhoneInput from '../../components/PhoneInput';
@@ -14,17 +14,17 @@ const CitizenProfile = () => {
 
     const [formData, setFormData] = useState({
         ...user,
-        address: '123 Maple Avenue, Springfield, SP 12345',
-        dob: '1990-05-15',
-        phone: '+1 (555) 123-4567',
-        occupation: 'Software Engineer',
-        bloodGroup: 'O+',
-        nationality: 'Citizen',
-        fatherName: 'Vishva',
-        motherName: 'Vidhnu',
+        address: '12, Bharathi Street, Gandhi Nagar, Madurai, Tamil Nadu - 625020',
+        dob: '1995-08-25',
+        phone: '+91 98456 78901',
+        occupation: 'Software Developer',
+        bloodGroup: 'B+',
+        nationality: 'Indian',
+        fatherName: 'Ranganathan',
+        motherName: 'Meenakshi',
         maritalStatus: 'Single',
         name: user?.name || 'Balaji',
-        email: user?.email || 'balaji@example.com',
+        email: user?.email || 'balaji@example.in',
     });
 
     const handleChange = (e) => {
@@ -62,10 +62,10 @@ const CitizenProfile = () => {
                 {isEditing ? (
                     <div className="flex gap-2">
                         <Button variant="outline" onClick={handleCancel} className="flex items-center gap-2">
-                            <X size={16} /> Cancel
+                            <FaTimes size={16} /> Cancel
                         </Button>
                         <Button onClick={handleSave} className="flex items-center gap-2">
-                            <Save size={16} /> Save Changes
+                            <FaSave size={16} /> Save Changes
                         </Button>
                     </div>
                 ) : (
@@ -80,19 +80,19 @@ const CitizenProfile = () => {
 
                         <div className="relative w-32 h-32 mx-auto mb-4 group">
                             <div className="w-full h-full bg-red-100 rounded-full flex items-center justify-center text-red-500 overflow-hidden">
-                                <User size={64} />
+                                <FaUser size={64} />
                             </div>
 
                             <button
                                 onClick={handlePhotoUpload}
                                 className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
                             >
-                                <Camera size={24} className="text-white mb-1" />
+                                <FaCamera size={24} className="text-white mb-1" />
                                 <span className="text-white text-xs font-medium">Change Photo</span>
                             </button>
 
                             <div className="absolute bottom-0 right-0 p-2 bg-red-600 rounded-full shadow-lg cursor-pointer hover:bg-red-700 transition-colors" onClick={handlePhotoUpload}>
-                                <Camera size={16} className="text-white" />
+                                <FaCamera size={16} className="text-white" />
                             </div>
                         </div>
 
@@ -120,7 +120,7 @@ const CitizenProfile = () => {
 
                         <div className="border-t border-gray-100 pt-4 text-left space-y-3">
                             <div className="flex items-center text-sm text-gray-600">
-                                <Mail size={16} className="mr-2 text-red-500" />
+                                <FaEnvelope size={16} className="mr-2 text-red-500" />
                                 {isEditing ? (
                                     <input
                                         name="email"
@@ -131,7 +131,7 @@ const CitizenProfile = () => {
                                 ) : formData.email}
                             </div>
                             <div className="flex items-center text-sm text-gray-600">
-                                <Phone size={16} className="mr-2 text-red-500" />
+                                <FaPhone size={16} className="mr-2 text-red-500" />
                                 {isEditing ? (
                                     <PhoneInput
                                         value={formData.phone}
@@ -141,7 +141,7 @@ const CitizenProfile = () => {
                                 ) : formData.phone}
                             </div>
                             <div className="flex items-start text-sm text-gray-600">
-                                <MapPin size={16} className="mr-2 mt-1 text-red-500" />
+                                <FaMapMarkerAlt size={16} className="mr-2 mt-1 text-red-500" />
                                 {isEditing ? (
                                     <textarea
                                         name="address"

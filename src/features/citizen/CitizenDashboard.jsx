@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { FileText, UserCheck, AlertCircle, ArrowRight, Clock } from 'lucide-react';
+import { FaFileAlt, FaUserCheck, FaExclamationCircle, FaArrowRight, FaClock } from 'react-icons/fa';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,15 +10,15 @@ const CitizenDashboard = () => {
     const navigate = useNavigate();
 
     const stats = [
-        { title: 'Identity Status', value: 'Verified', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: UserCheck },
-        { title: 'Active Certificates', value: '2 Issued', color: 'text-red-700', bg: 'bg-red-50', icon: FileText },
-        { title: 'Pending Actions', value: 'None', color: 'text-gray-500', bg: 'bg-gray-100', icon: AlertCircle },
+        { title: 'Identity Status', value: 'Verified', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: FaUserCheck },
+        { title: 'Active Certificates', value: '2 Issued', color: 'text-red-700', bg: 'bg-red-50', icon: FaFileAlt },
+        { title: 'Pending Actions', value: 'None', color: 'text-gray-500', bg: 'bg-gray-100', icon: FaExclamationCircle },
     ];
 
     const recentActivity = [
-        { id: 1, action: 'Birth Certificate Downloaded', date: '2 hours ago', icon: FileText, color: 'bg-red-50 text-red-700' },
-        { id: 2, action: 'Profile Information Updated', date: '1 day ago', icon: UserCheck, color: 'bg-emerald-100 text-emerald-600' },
-        { id: 3, action: 'Login from New Device', date: '3 days ago', icon: Clock, color: 'bg-gray-100 text-gray-600' },
+        { id: 1, action: 'Birth Certificate Downloaded', date: '2 hours ago', icon: FaFileAlt, color: 'bg-red-50 text-red-700' },
+        { id: 2, action: 'Profile Information Updated', date: '1 day ago', icon: FaUserCheck, color: 'bg-emerald-100 text-emerald-600' },
+        { id: 3, action: 'Login from New Device', date: '3 days ago', icon: FaClock, color: 'bg-gray-100 text-gray-600' },
     ];
 
     return (
@@ -80,7 +80,7 @@ const CitizenDashboard = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-4 rounded-lg bg-gray-50 border border-gray-100 hover:border-red-200 transition-colors cursor-pointer group">
                                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Voting District</p>
-                                    <p className="font-medium text-gray-900 group-hover:text-red-700 transition-colors">North Springfield, Zone 4</p>
+                                    <p className="font-medium text-gray-900 group-hover:text-red-700 transition-colors">Sholinganallur, Zone 15 (Chennai)</p>
                                 </div>
                                 <div className="p-4 rounded-lg bg-gray-50 border border-gray-100 hover:border-red-200 transition-colors cursor-pointer group">
                                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Tax Status</p>

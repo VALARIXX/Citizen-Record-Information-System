@@ -4,7 +4,7 @@ import Modal from '../../components/Modal';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import PhoneInput from '../../components/PhoneInput';
-import { FileText, Download, Clock, Plus, CheckCircle } from 'lucide-react';
+import { FaFileAlt, FaDownload, FaClock, FaPlus, FaCheckCircle } from 'react-icons/fa';
 
 const CertificateRequest = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,8 +45,8 @@ const CertificateRequest = () => {
     });
 
     const [certificates, setCertificates] = useState([
-        { id: 1, type: 'Birth Certificate', issuedDate: '2023-11-15', status: 'Issued', downloadable: true },
-        { id: 2, type: 'Income Certificate', issuedDate: '2023-10-01', status: 'Issued', downloadable: true },
+        { id: 1, type: 'Birth Certificate', issuedDate: '2024-05-15', status: 'Issued', downloadable: true },
+        { id: 2, type: 'Income Certificate', issuedDate: '2024-12-01', status: 'Issued', downloadable: true },
         { id: 3, type: 'Community Certificate', issuedDate: null, status: 'Processing', downloadable: false },
     ]);
 
@@ -133,19 +133,22 @@ const CertificateRequest = () => {
                                 required
                             />
                             <Input
-                                label="Hospital/Address"
+                                label="Hospital / Place of Birth"
+                                placeholder="e.g. Apollo Hospital, Greams Road, Chennai"
                                 value={requestData.hospitalName}
                                 onChange={(e) => setRequestData({ ...requestData, hospitalName: e.target.value })}
                                 required
                             />
                             <Input
-                                label="Father's Name"
+                                label="Father's Full Name"
+                                placeholder="Ranganathan S"
                                 value={requestData.fatherName}
                                 onChange={(e) => setRequestData({ ...requestData, fatherName: e.target.value })}
                                 required
                             />
                             <Input
-                                label="Mother's Name"
+                                label="Mother's Full Name"
+                                placeholder="Meenakshi R"
                                 value={requestData.motherName}
                                 onChange={(e) => setRequestData({ ...requestData, motherName: e.target.value })}
                                 required
@@ -352,7 +355,7 @@ const CertificateRequest = () => {
                     <p className="text-gray-500 text-sm mt-1">Request and manage your official certificates.</p>
                 </div>
                 <Button onClick={() => setIsModalOpen(true)}>
-                    <Plus size={18} className="mr-2" /> Request Certificate
+                    <FaPlus size={18} className="mr-2" /> Request Certificate
                 </Button>
             </div>
 
@@ -361,7 +364,7 @@ const CertificateRequest = () => {
                     <Card key={cert.id} className="flex flex-col md:flex-row md:items-center justify-between p-4">
                         <div className="flex items-center gap-4">
                             <div className={`p-3 rounded-lg ${cert.status === 'Issued' ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'}`}>
-                                <FileText size={24} />
+                                <FaFileAlt size={24} />
                             </div>
                             <div>
                                 <h3 className="font-semibold text-gray-900">{cert.type}</h3>
@@ -372,13 +375,13 @@ const CertificateRequest = () => {
                         </div>
                         <div className="flex items-center gap-4 mt-4 md:mt-0">
                             <span className={`px-3 py-1 text-xs font-semibold rounded-full border ${getStatusStyles(cert.status)}`}>
-                                {cert.status === 'Processing' && <Clock size={12} className="inline mr-1" />}
-                                {cert.status === 'Issued' && <CheckCircle size={12} className="inline mr-1" />}
+                                {cert.status === 'Processing' && <FaClock size={12} className="inline mr-1" />}
+                                {cert.status === 'Issued' && <FaCheckCircle size={12} className="inline mr-1" />}
                                 {cert.status}
                             </span>
                             {cert.downloadable && (
                                 <Button variant="secondary" size="sm">
-                                    <Download size={16} className="mr-1" /> Download
+                                    <FaDownload size={16} className="mr-1" /> Download
                                 </Button>
                             )}
                         </div>

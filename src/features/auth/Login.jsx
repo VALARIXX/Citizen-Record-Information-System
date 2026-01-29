@@ -2,49 +2,52 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from './authSlice';
-import { Layers, ArrowRight, ShieldCheck } from 'lucide-react';
+import { FaLayerGroup, FaArrowRight, FaShieldAlt } from 'react-icons/fa';
 import Logo from '../../components/Logo';
+import { USERS } from '../../data/loginCredentials';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
         setTimeout(() => {
-            let role = 'CITIZEN';
-            if (email.includes('admin')) role = 'ADMIN';
-            else if (email.includes('officer')) role = 'OFFICER';
+            const foundUser = USERS.find(u => u.email === email && u.password === password);
 
-            const mockUser = {
-                name: email.split('@')[0],
-                email: email,
-                id: '12345',
-            };
+            if (foundUser) {
+                dispatch(loginSuccess({
+                    user: {
+                        name: foundUser.name,
+                        email: foundUser.email,
+                        id: foundUser.id,
+                    },
+                    token: 'mock-jwt-token',
+                    role: foundUser.role,
+                }));
 
-            dispatch(loginSuccess({
-                user: mockUser,
-                token: 'mock-jwt-token',
-                role: role,
-            }));
+                const role = foundUser.role;
+                if (role === 'ADMIN') navigate('/admin');
+                else if (role === 'OFFICER') navigate('/census');
+                else navigate('/citizen');
+            } else {
+                setError('Invalid email or password');
+            }
 
             setLoading(false);
-
-            if (role === 'ADMIN') navigate('/admin');
-            else if (role === 'OFFICER') navigate('/census');
-            else navigate('/citizen');
-
         }, 1000);
     };
 
     return (
         <div className="min-h-screen flex bg-white">
-            
+
             <div className="hidden lg:flex lg:w-1/2 bg-red-900 relative flex-col justify-between p-12 overflow-hidden text-white">
                 <div className="relative z-10">
                     <div className="mb-10">
@@ -80,6 +83,12 @@ const Login = () => {
                         <p className="mt-2 text-sm text-gray-600">
                             Or <a href="#" className="font-medium text-red-700 hover:text-red-600">register for a new citizen ID</a>
                         </p>
+                        {error && (
+                            <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm border border-red-100 flex items-center gap-2">
+                                <FaShieldAlt size={14} className="flex-shrink-0" />
+                                {error}
+                            </div>
+                        )}
                     </div>
 
                     <div className="bg-white py-8 px-4 shadow-xl shadow-red-100 sm:rounded-2xl sm:px-10 border border-gray-100/50">
@@ -146,28 +155,35 @@ const Login = () => {
                                     disabled={loading}
                                     className={`w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-md shadow-red-500/30 text-sm font-semibold text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all transform hover:-translate-y-0.5 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                                 >
-                                    {loading ? 'Authenticating...' : 'Sign in safely'}
-                                    {!loading && <ArrowRight size={16} className="ml-2" />}
+                                    {loading ? 'Logging in...' : 'Sign In'} <FaArrowRight size={18} className="ml-2" />
                                 </button>
                             </div>
                         </form>
 
-                        <div className="mt-6">
-                            <div className="relative">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-200"></div>
+                        <div className="mt-8 pt-6 border-t border-gray-100">
+                            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Demo Credentials</p>
+                            <div className="grid grid-cols-1 gap-2">
+                                <div className="flex justify-between text-xs p-2 bg-blue-50/50 rounded-lg">
+                                    <span className="font-medium text-blue-700">Admin</span>
+                                    <code className="text-blue-600">gokul@civic.id / password123</code>
                                 </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white text-gray-500">Secure Audit Log Enabled</span>
+                                <div className="flex justify-between text-xs p-2 bg-emerald-50/50 rounded-lg">
+                                    <span className="font-medium text-emerald-700">Officer</span>
+                                    <code className="text-emerald-600">abdul@civic.id / password123</code>
+                                </div>
+                                <div className="flex justify-between text-xs p-2 bg-red-50/50 rounded-lg">
+                                    <span className="font-medium text-red-700">Citizen</span>
+                                    <code className="text-red-600">arjun@civic.id / password123</code>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-6 text-center text-xs text-gray-400 flex justify-center items-center gap-1">
-                        <ShieldCheck size={14} />
-                        <span>Official Government Portal • 256-bit Encryption</span>
-                    </div>
+                </div>
+
+                <div className="mt-8 text-center text-xs text-gray-400 flex justify-center items-center gap-1">
+                    <FaShieldAlt size={14} />
+                    <span>Official Government Portal • 256-bit Encryption</span>
                 </div>
             </div>
         </div>

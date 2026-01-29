@@ -3,7 +3,7 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import Input from '../../components/Input';
-import { User, Trash2, Edit2, Shield, Plus, Lock } from 'lucide-react';
+import { FaUser, FaTrash, FaEdit, FaShieldAlt, FaPlus, FaLock } from 'react-icons/fa';
 
 const UserManagement = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -67,7 +67,7 @@ const UserManagement = () => {
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
                 <Button onClick={() => setIsAddModalOpen(true)}>
-                    <Plus size={18} className="mr-2" /> Add New User
+                    <FaPlus size={18} className="mr-2" /> Add New User
                 </Button>
             </div>
 
@@ -88,7 +88,7 @@ const UserManagement = () => {
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0 h-10 w-10">
                                             <div className="h-10 w-10 rounded-full bg-red-50 flex items-center justify-center text-red-700">
-                                                <User size={20} />
+                                                <FaUser size={20} />
                                             </div>
                                         </div>
                                         <div className="ml-4">
@@ -99,7 +99,7 @@ const UserManagement = () => {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="text-sm text-gray-900 flex items-center">
-                                        <Shield size={16} className="mr-1 text-gray-400" /> {user.role}
+                                        <FaShieldAlt size={16} className="mr-1 text-gray-400" /> {user.role}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -112,13 +112,13 @@ const UserManagement = () => {
                                         onClick={() => handleOpenEdit(user)}
                                         className="text-gray-600 hover:text-gray-900 mr-4 transition-colors"
                                     >
-                                        <Edit2 size={18} />
+                                        <FaEdit size={18} />
                                     </button>
                                     <button
                                         onClick={() => handleOpenDelete(user)}
                                         className="text-red-600 hover:text-red-900 transition-colors"
                                     >
-                                        <Trash2 size={18} />
+                                        <FaTrash size={18} />
                                     </button>
                                 </td>
                             </tr>
@@ -145,7 +145,7 @@ const UserManagement = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
                                 type="password"
                                 value={newUser.password}

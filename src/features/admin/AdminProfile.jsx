@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { User, Mail, Lock, Shield, Save } from 'lucide-react';
+import { FaUser, FaEnvelope, FaLock, FaShieldAlt, FaSave } from 'react-icons/fa';
 
 const AdminProfile = () => {
     const { user } = useSelector((state) => state.auth);
@@ -68,7 +68,7 @@ const AdminProfile = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     name="name"
                                     value={formData.name}
@@ -80,7 +80,7 @@ const AdminProfile = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     name="email"
                                     type="email"
@@ -94,7 +94,7 @@ const AdminProfile = () => {
 
                     <div className="flex justify-end pt-4">
                         <Button type="submit">
-                            <Save size={16} className="mr-2" /> Save Changes
+                            <FaSave size={18} className="mr-2" /> Save Changes
                         </Button>
                     </div>
                 </form>
@@ -105,7 +105,7 @@ const AdminProfile = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
                                 name="currentPassword"
                                 type="password"

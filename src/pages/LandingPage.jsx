@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../features/auth/authSlice';
-import { Layers, ShieldCheck, ArrowRight, UserPlus, LogIn, CheckCircle, X } from 'lucide-react';
+import { FaLayerGroup, FaShieldAlt, FaArrowRight, FaUserPlus, FaSignInAlt, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import PhoneInput from '../components/PhoneInput';
 
@@ -136,7 +136,7 @@ const LandingPage = () => {
 
                 <div className={`${showAuthForm ? 'lg:w-1/2' : 'lg:w-full text-center'} space-y-8 transition-all duration-300`}>
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-red-700 text-xs font-semibold uppercase tracking-wide">
-                        <ShieldCheck size={14} />
+                        <FaShieldAlt size={14} />
                         Official Government Portal
                     </div>
 
@@ -156,7 +156,7 @@ const LandingPage = () => {
                             "24/7 Digital Access"
                         ].map((feature, idx) => (
                             <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
-                                <CheckCircle size={16} className="text-yellow-500 shrink-0" />
+                                <FaCheckCircle size={16} className="text-yellow-500 shrink-0" />
                                 {feature}
                             </div>
                         ))}
@@ -168,14 +168,14 @@ const LandingPage = () => {
                                 onClick={() => handleShowAuth(true)}
                                 className="px-8 py-3 text-lg font-semibold text-white bg-red-700 rounded-lg hover:bg-red-800 transition-colors shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
                             >
-                                <LogIn size={20} />
+                                <FaSignInAlt size={20} />
                                 Sign In to Portal
                             </button>
                             <button
                                 onClick={() => handleShowAuth(false)}
                                 className="px-8 py-3 text-lg font-semibold text-red-700 bg-white border-2 border-red-200 rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2"
                             >
-                                <UserPlus size={20} />
+                                <FaUserPlus size={20} />
                                 Create Account
                             </button>
                         </div>
@@ -190,7 +190,7 @@ const LandingPage = () => {
                                 onClick={() => setShowAuthForm(false)}
                                 className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-colors"
                             >
-                                <X size={18} />
+                                <FaTimes size={18} />
                             </button>
 
                             <div className="flex text-sm font-medium border-b border-gray-100">
@@ -198,13 +198,13 @@ const LandingPage = () => {
                                     onClick={() => setIsLoginMode(true)}
                                     className={`flex-1 py-4 flex items-center justify-center gap-2 transition-colors ${isLoginMode ? 'text-red-700 bg-red-50/50 border-b-2 border-red-700' : 'text-gray-500 hover:text-gray-700'}`}
                                 >
-                                    <LogIn size={18} /> Sign In
+                                    <FaSignInAlt size={18} /> Sign In
                                 </button>
                                 <button
                                     onClick={() => setIsLoginMode(false)}
                                     className={`flex-1 py-4 flex items-center justify-center gap-2 transition-colors ${!isLoginMode ? 'text-red-700 bg-red-50/50 border-b-2 border-red-700' : 'text-gray-500 hover:text-gray-700'}`}
                                 >
-                                    <UserPlus size={18} /> New Account
+                                    <FaUserPlus size={18} /> New Account
                                 </button>
                             </div>
 
@@ -239,7 +239,7 @@ const LandingPage = () => {
                                             className="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-lg shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                                         >
                                             {loading ? 'Accessing...' : 'Access Portal'}
-                                            {!loading && <ArrowRight size={18} />}
+                                            {!loading && <FaArrowRight size={18} />}
                                         </button>
 
                                         <div className="text-center">
@@ -299,7 +299,7 @@ const LandingPage = () => {
                                             className="w-full py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-md shadow-yellow-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                                         >
                                             {loading ? 'Creating Account...' : 'Create Citizen Account'}
-                                            {!loading && <UserPlus size={18} />}
+                                            {!loading && <FaUserPlus size={18} />}
                                         </button>
                                     </form>
                                 )}
@@ -321,9 +321,9 @@ const LandingPage = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { title: 'Identity Verification', desc: 'Secure biometric and demographic verification.', icon: ShieldCheck },
-                            { title: 'Certificate Issuance', desc: 'Instant digital birth, income, and community certificates.', icon: Layers },
-                            { title: 'Household Registry', desc: 'Manage your family records in one secure place.', icon: UserPlus }
+                            { title: 'Identity Verification', desc: 'Secure biometric and demographic verification.', icon: FaShieldAlt },
+                            { title: 'Certificate Issuance', desc: 'Instant digital birth, income, and community certificates.', icon: FaLayerGroup },
+                            { title: 'Household Registry', desc: 'Manage your family records in one secure place.', icon: FaUserPlus }
                         ].map((item, i) => (
                             <div key={i} className="p-6 bg-red-50 rounded-xl border border-red-100 hover:shadow-lg transition-shadow">
                                 <div className="p-3 bg-red-100 w-fit rounded-lg text-red-700 mb-4">

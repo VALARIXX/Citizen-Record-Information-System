@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Users, FileText, CheckCircle, Clock, Search, ArrowRight } from 'lucide-react';
+import { FaUsers, FaFileAlt, FaCheckCircle, FaClock, FaSearch, FaArrowRight } from 'react-icons/fa';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,15 +10,15 @@ const OfficerDashboard = () => {
     const navigate = useNavigate();
 
     const stats = [
-        { title: 'Total Citizens', value: '1,284', color: 'text-blue-700', bg: 'bg-blue-50', icon: Users },
-        { title: 'Pending Tasks', value: '12', color: 'text-red-700', bg: 'bg-red-50', icon: Clock },
-        { title: 'Processed Today', value: '8', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: CheckCircle },
+        { title: 'Total Citizens', value: '1,284', color: 'text-blue-700', bg: 'bg-blue-50', icon: FaUsers },
+        { title: 'Pending Tasks', value: '12', color: 'text-red-700', bg: 'bg-red-50', icon: FaClock },
+        { title: 'Processed Today', value: '8', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: FaCheckCircle },
     ];
 
     const upcomingTasks = [
-        { id: 1, type: 'Birth Certificate', citizen: 'Arjun', status: 'Verification Pending', time: '1 hr ago' },
-        { id: 2, type: 'Death Certificate', citizen: 'Gokul', status: 'Ready for Review', time: '3 hrs ago' },
-        { id: 3, type: 'Marriage Certificate', citizen: 'Praveen', status: 'In Progress', time: '5 hrs ago' },
+        { id: 1, type: 'Birth Certificate', citizen: 'Ram Kumar', status: 'Verification Pending', time: '1 hr ago' },
+        { id: 2, type: 'Death Certificate', citizen: 'Lakshmi', status: 'Ready for Review', time: '3 hrs ago' },
+        { id: 3, type: 'Marriage Certificate', citizen: 'Sivakumar', status: 'In Progress', time: '5 hrs ago' },
     ];
 
     return (
@@ -32,7 +32,7 @@ const OfficerDashboard = () => {
                     </p>
                     <div className="mt-6 flex gap-3">
                         <Button onClick={() => navigate('/census/search')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
-                            <Search size={18} className="mr-2" /> Search Registry
+                            <FaSearch size={18} className="mr-2" /> Search Registry
                         </Button>
                         <Button onClick={() => navigate('/census/enroll')} variant="outline" className="text-red-900 border-red-100 hover:bg-red-50">
                             New Enrollment
@@ -98,7 +98,7 @@ const OfficerDashboard = () => {
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                             <Link to="/census/tasks" className="flex items-center justify-center text-sm font-medium text-red-700 hover:text-red-800">
-                                Handle tasks <ArrowRight size={16} className="ml-1" />
+                                Handle tasks <FaArrowRight size={16} className="ml-1" />
                             </Link>
                         </div>
                     </Card>

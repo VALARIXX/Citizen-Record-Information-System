@@ -4,7 +4,7 @@ import Modal from '../../components/Modal';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import PhoneInput from '../../components/PhoneInput';
-import { User, Users, Home, ArrowRight, Plus } from 'lucide-react';
+import { FaUser, FaUsers, FaHome, FaArrowRight, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const HouseholdView = () => {
@@ -23,14 +23,14 @@ const HouseholdView = () => {
 
     const [members, setMembers] = useState([
         { id: 1, name: 'Arjun', relation: 'Head of Household', age: 34, gender: 'Male', status: 'Active', avatar: 'AR' },
-        { id: 2, name: 'Gokul', relation: 'Spouse', age: 32, gender: 'Male', status: 'Active', avatar: 'GK' },
-        { id: 3, name: 'Praveen', relation: 'Son', age: 8, gender: 'Male', status: 'Active', avatar: 'PR' },
-        { id: 4, name: 'Kishore', relation: 'Daughter', age: 5, gender: 'Male', status: 'Active', avatar: 'KS' },
+        { id: 2, name: 'Priya', relation: 'Spouse', age: 32, gender: 'Female', status: 'Active', avatar: 'PR' },
+        { id: 3, name: 'Karthik', relation: 'Son', age: 8, gender: 'Male', status: 'Active', avatar: 'KA' },
+        { id: 4, name: 'Kavya', relation: 'Daughter', age: 5, gender: 'Female', status: 'Active', avatar: 'KV' },
     ]);
 
     const household = {
-        address: '123 Maple Avenue, Springfield, SP 12345',
-        familyId: 'FAM-2023-8821',
+        address: 'No. 45, Anna Salai, T. Nagar, Chennai, Tamil Nadu - 600017',
+        familyId: 'FAM-TN-2024-8821',
     };
 
     const handleAddMember = (e) => {
@@ -57,7 +57,7 @@ const HouseholdView = () => {
                     <p className="text-gray-500 text-sm mt-1">Manage family members and view residency details.</p>
                 </div>
                 <Button onClick={() => setIsModalOpen(true)} className="hidden sm:flex">
-                    <Plus size={18} className="mr-2" /> Add Member
+                    <FaPlus size={18} className="mr-2" /> Add Member
                 </Button>
             </div>
 
@@ -65,10 +65,10 @@ const HouseholdView = () => {
                 <div className="flex items-start md:items-center justify-between flex-col md:flex-row gap-4">
                     <div className="flex items-center">
                         <div className="p-3 bg-white rounded-xl shadow-sm mr-4 text-red-700">
-                            <Home size={28} />
+                            <FaHome size={28} />
                         </div>
                         <div>
-                            <h2 className="text-lg font-bold text-gray-900">The Arjun Family</h2>
+                            <h2 className="text-lg font-bold text-gray-900">The Arjun's Family</h2>
                             <p className="text-sm text-gray-600">{household.address}</p>
                         </div>
                     </div>
@@ -86,7 +86,7 @@ const HouseholdView = () => {
             </Card>
 
             <h3 className="text-lg font-semibold text-gray-900 flex items-center mt-8 mb-4">
-                <Users size={20} className="mr-2 text-red-600" />
+                <FaUsers size={20} className="mr-2 text-red-600" />
                 Family Members
             </h3>
 
@@ -119,7 +119,7 @@ const HouseholdView = () => {
                     className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-all group min-h-[200px]"
                 >
                     <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-red-100 group-hover:text-red-600 mb-3 transition-colors">
-                        <Plus size={24} />
+                        <FaPlus size={24} />
                     </div>
                     <span className="text-sm font-semibold text-gray-600 group-hover:text-red-700">Add New Member</span>
                 </button>

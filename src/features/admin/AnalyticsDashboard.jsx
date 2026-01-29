@@ -4,7 +4,7 @@ import {
     PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts';
 import Card from '../../components/Card';
-import { TrendingUp, Users, Home, Activity } from 'lucide-react';
+import { FaChartLine, FaUsers, FaHome, FaActivity, FaArrowUp } from 'react-icons/fa';
 
 const AnalyticsDashboard = () => {
     const populationData = [
@@ -23,9 +23,10 @@ const AnalyticsDashboard = () => {
     const COLORS = ['#b91c1c', '#10b981', '#f59e0b', '#ef4444'];
 
     const stats = [
-        { name: 'Total Population', value: '1.2M', change: '+2.4%', icon: Users, color: 'text-red-700', bg: 'bg-red-50' },
-        { name: 'Avg. Household Size', value: '3.9', change: '-0.1%', icon: Home, color: 'text-emerald-700', bg: 'bg-emerald-50' },
-        { name: 'Active Workforce', value: '68%', change: '+4.1%', icon: Activity, color: 'text-yellow-700', bg: 'bg-yellow-50' },
+        { title: 'Total Enrollments', value: '12,482', change: '+12%', icon: FaUsers, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { title: 'Active Residents', value: '11,205', change: '+5%', icon: FaHome, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { title: 'System Activity', value: '98.2%', change: '+0.5%', icon: FaActivity, color: 'text-purple-600', bg: 'bg-purple-50' },
+        { title: 'Growth Rate', value: '3.4%', change: '+1.2%', icon: FaChartLine, color: 'text-orange-600', bg: 'bg-orange-50' },
     ];
 
     return (
@@ -33,14 +34,14 @@ const AnalyticsDashboard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {stats.map((stat) => (
-                    <Card key={stat.name} className="border-0 shadow-soft">
+                    <Card key={stat.title} className="border-0 shadow-soft">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{stat.name}</p>
+                                <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{stat.title}</p>
                                 <div className="mt-2 flex items-baseline gap-2">
                                     <span className="text-3xl font-bold text-gray-900">{stat.value}</span>
                                     <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center">
-                                        <TrendingUp size={12} className="mr-1" /> {stat.change}
+                                        <FaArrowUp size={12} className="mr-1" /> {stat.change}
                                     </span>
                                 </div>
                             </div>
@@ -97,7 +98,7 @@ const AnalyticsDashboard = () => {
                                 <Legend verticalAlign="bottom" height={36} iconType="circle" />
                             </PieChart>
                         </ResponsiveContainer>
-                        
+
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-8">
                             <span className="text-3xl font-bold text-gray-800">750</span>
                             <span className="text-xs text-gray-400 font-medium uppercase">Total Sample</span>

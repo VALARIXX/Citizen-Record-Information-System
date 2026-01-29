@@ -1,16 +1,16 @@
 import React from 'react';
 import Card from '../../components/Card';
-import { AlertCircle, UserCheck, FileText, LogIn, LogOut, Settings, Shield } from 'lucide-react';
+import { FaExclamationCircle, FaUserCheck, FaFileAlt, FaSignInAlt, FaSignOutAlt, FaCog, FaShieldAlt } from 'react-icons/fa';
 
 const SystemLogs = () => {
     const logs = [
-        { id: 1, type: 'auth', action: 'User Login', user: 'admin@civic.id', timestamp: '2026-01-21 22:15:32', status: 'success', icon: LogIn },
-        { id: 2, type: 'auth', action: 'User Logout', user: 'officer@civic.id', timestamp: '2026-01-21 21:45:10', status: 'success', icon: LogOut },
-        { id: 3, type: 'record', action: 'Citizen Record Updated', user: 'officer@civic.id', timestamp: '2026-01-21 20:30:45', status: 'success', icon: FileText },
-        { id: 4, type: 'auth', action: 'Failed Login Attempt', user: 'unknown@test.com', timestamp: '2026-01-21 19:22:18', status: 'error', icon: AlertCircle },
-        { id: 5, type: 'admin', action: 'User Role Changed', user: 'admin@civic.id', timestamp: '2026-01-21 18:15:00', status: 'warning', icon: Shield },
-        { id: 6, type: 'record', action: 'Birth Certificate Approved', user: 'officer@civic.id', timestamp: '2026-01-21 17:45:22', status: 'success', icon: UserCheck },
-        { id: 7, type: 'system', action: 'System Backup Completed', user: 'system', timestamp: '2026-01-21 03:00:00', status: 'success', icon: Settings },
+        { id: 1, type: 'auth', action: 'User Login', user: 'admin@civic.id', timestamp: '2026-01-21 22:15:32', status: 'success', icon: FaSignInAlt },
+        { id: 2, type: 'auth', action: 'User Logout', user: 'officer@civic.id', timestamp: '2026-01-21 21:45:10', status: 'success', icon: FaSignOutAlt },
+        { id: 3, type: 'record', action: 'Citizen Record Updated', user: 'officer@civic.id', timestamp: '2026-01-21 20:30:45', status: 'success', icon: FaFileAlt },
+        { id: 4, type: 'auth', action: 'Failed Login Attempt', user: 'unknown@test.com', timestamp: '2026-01-21 19:22:18', status: 'error', icon: FaExclamationCircle },
+        { id: 5, type: 'admin', action: 'User Role Changed', user: 'admin@civic.id', timestamp: '2026-01-21 18:15:00', status: 'warning', icon: FaShieldAlt },
+        { id: 6, type: 'record', action: 'Birth Certificate Approved', user: 'officer@civic.id', timestamp: '2026-01-21 17:45:22', status: 'success', icon: FaUserCheck },
+        { id: 7, type: 'system', action: 'System Backup Completed', user: 'system', timestamp: '2026-01-21 03:00:00', status: 'success', icon: FaCog },
     ];
 
     const getStatusStyles = (status) => {

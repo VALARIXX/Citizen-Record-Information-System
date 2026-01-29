@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import { User, Mail, Lock, Briefcase, Save } from 'lucide-react';
+import { FaUser, FaEnvelope, FaLock, FaBriefcase, FaSave } from 'react-icons/fa';
 
 const OfficerProfile = () => {
     const { user } = useSelector((state) => state.auth);
@@ -60,7 +60,7 @@ const OfficerProfile = () => {
                         <div>
                             <h3 className="text-lg font-semibold text-gray-900">{formData.name}</h3>
                             <p className="text-sm text-gray-500 flex items-center gap-1">
-                                <Briefcase size={14} /> Census Officer
+                                <FaBriefcase size={14} /> Census Officer
                             </p>
                             <p className="text-xs text-gray-400 mt-1">ID: {formData.employeeId}</p>
                         </div>
@@ -70,7 +70,7 @@ const OfficerProfile = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     name="name"
                                     value={formData.name}
@@ -82,7 +82,7 @@ const OfficerProfile = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                                 <input
                                     name="email"
                                     type="email"
@@ -105,7 +105,7 @@ const OfficerProfile = () => {
 
                     <div className="flex justify-end pt-4">
                         <Button type="submit">
-                            <Save size={16} className="mr-2" /> Save Changes
+                            <FaSave size={18} className="mr-2" /> Save Changes
                         </Button>
                     </div>
                 </form>
@@ -116,7 +116,7 @@ const OfficerProfile = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
                                 name="currentPassword"
                                 type="password"
@@ -153,7 +153,7 @@ const OfficerProfile = () => {
                     </div>
                     <div className="flex justify-end pt-4">
                         <Button type="submit" variant="secondary">
-                            <Lock size={16} className="mr-2" /> Update Password
+                            <FaLock size={16} className="mr-2" /> Update Password
                         </Button>
                     </div>
                 </form>

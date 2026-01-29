@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteError, isRouteErrorResponse, Link } from 'react-router-dom';
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
+import { FaExclamationTriangle, FaHome, FaSync } from 'react-icons/fa';
 
 const ErrorBoundary = () => {
     const error = useRouteError();
@@ -26,7 +26,7 @@ const ErrorBoundary = () => {
             <div className="max-w-md w-full space-y-8 text-center">
                 <div className="mx-auto flex items-center justify-center p-4">
                     <div className={`p-4 rounded-full ${is404 ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600'}`}>
-                        <AlertTriangle size={64} />
+                        <FaExclamationTriangle size={48} />
                     </div>
                 </div>
 
@@ -43,7 +43,7 @@ const ErrorBoundary = () => {
                         onClick={() => window.location.reload()}
                         className="flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                     >
-                        <RefreshCw size={16} className="mr-2" />
+                        <FaSync size={18} className="mr-2" />
                         Reload Page
                     </button>
 
@@ -51,7 +51,7 @@ const ErrorBoundary = () => {
                         to="/"
                         className="flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                     >
-                        <Home size={16} className="mr-2" />
+                        <FaHome size={18} className="mr-2" />
                         Go Home
                     </Link>
                 </div>

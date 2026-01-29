@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
-import { CheckCircle, XCircle, FileText, Clock, Eye } from 'lucide-react';
+import { FaCheckCircle, FaTimesCircle, FaFileAlt, FaClock, FaEye } from 'react-icons/fa';
 
 const ApplicationProcessing = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedApp, setSelectedApp] = useState(null);
 
     const [applications, setApplications] = useState([
-        { id: 'APP-001', applicant: 'Kishore', type: 'Birth Certificate', date: '2023-11-20', status: 'Pending' },
-        { id: 'APP-002', applicant: 'Vishva', type: 'Address Update', date: '2023-11-19', status: 'Verified' },
-        { id: 'APP-003', applicant: 'Vidhnu', type: 'Death Certificate', date: '2023-11-18', status: 'Rejected' },
-        { id: 'APP-004', applicant: 'Balaji', type: 'Income Certificate', date: '2023-11-17', status: 'Pending' },
+        { id: 'APP-TN-001', applicant: 'Ram Kumar', type: 'Birth Certificate', date: '2023-11-20', status: 'Pending' },
+        { id: 'APP-TN-002', applicant: 'Sivakumar', type: 'Address Update', date: '2023-11-19', status: 'Verified' },
+        { id: 'APP-TN-003', applicant: 'Lakshmi', type: 'Death Certificate', date: '2023-11-18', status: 'Rejected' },
+        { id: 'APP-TN-004', applicant: 'Meera', type: 'Income Certificate', date: '2023-11-17', status: 'Pending' },
     ]);
 
     const handleViewDetails = (app) => {
@@ -53,7 +53,7 @@ const ApplicationProcessing = () => {
                     <Card key={app.id} className="flex flex-col md:flex-row md:items-center justify-between p-4">
                         <div className="flex-1">
                             <div className="flex items-center mb-2">
-                                <FileText className="text-blue-500 mr-2" size={20} />
+                                <FaFileAlt className="text-blue-500 mr-2" size={20} />
                                 <h3 className="text-lg font-medium text-gray-900">{app.type}</h3>
                                 <span className="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
                                     {app.id}
@@ -65,9 +65,9 @@ const ApplicationProcessing = () => {
 
                         <div className="flex items-center gap-4 mt-4 md:mt-0">
                             <div className={`flex items-center text-sm font-medium ${getStatusColor(app.status)}`}>
-                                {app.status === 'Pending' && <Clock size={16} className="mr-1" />}
-                                {app.status === 'Verified' && <CheckCircle size={16} className="mr-1" />}
-                                {app.status === 'Rejected' && <XCircle size={16} className="mr-1" />}
+                                {app.status === 'Pending' && <FaClock size={14} className="mr-1" />}
+                                {app.status === 'Verified' && <FaCheckCircle size={14} className="mr-1" />}
+                                {app.status === 'Rejected' && <FaTimesCircle size={14} className="mr-1" />}
                                 {app.status}
                             </div>
 
@@ -76,7 +76,7 @@ const ApplicationProcessing = () => {
                                 size="sm"
                                 onClick={() => handleViewDetails(app)}
                             >
-                                <Eye size={16} className="mr-1" /> View Details
+                                <FaEye size={16} className="mr-1" /> View Details
                             </Button>
                         </div>
                     </Card>
@@ -108,10 +108,10 @@ const ApplicationProcessing = () => {
                         {selectedApp.status === 'Pending' && (
                             <div className="pt-4 border-t border-gray-100 flex gap-3 justify-end">
                                 <Button onClick={handleReject} className="bg-red-600 hover:bg-red-700 text-white">
-                                    <XCircle size={16} className="mr-1" /> Reject
+                                    <FaTimesCircle size={16} className="mr-1" /> Reject
                                 </Button>
                                 <Button onClick={handleApprove} className="bg-green-600 hover:bg-green-700 text-white">
-                                    <CheckCircle size={16} className="mr-1" /> Approve
+                                    <FaCheckCircle size={16} className="mr-1" /> Approve
                                 </Button>
                             </div>
                         )}

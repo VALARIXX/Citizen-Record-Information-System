@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, Eye, Edit, X, Plus } from 'lucide-react';
+import { FaSearch, FaFilter, FaEye, FaEdit, FaTimes, FaPlus } from 'react-icons/fa';
 import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -15,10 +15,10 @@ const RegistrySearch = () => {
     const [editData, setEditData] = useState({ name: '', address: '', status: '' });
 
     const [citizens, setCitizens] = useState([
-        { id: 'CID-1001-8821', name: 'Arjun', address: '123 Main St, Springfield', status: 'Active', dob: '1990-05-15', gender: 'Male', phone: '+91 9876543210' },
-        { id: 'CID-1002-9932', name: 'Gokul', address: '456 Oak Ave, Metropolis', status: 'Moved', dob: '1985-11-22', gender: 'Male', phone: '+91 8765432109' },
-        { id: 'CID-1003-7744', name: 'Praveen', address: '789 Pine Ln, Gotham', status: 'Deceased', dob: '1950-02-10', gender: 'Male', phone: '+91 7654321098' },
-        { id: 'CID-1004-5511', name: 'Kishore', address: '321 Elm St, Star City', status: 'Active', dob: '1995-08-30', gender: 'Male', phone: '+91 6543210987' },
+        { id: 'CID-TN-1001', name: 'Arjun', address: '45 Anna Salai, Chennai', status: 'Active', dob: '1990-05-15', gender: 'Male', phone: '+91 9876543210' },
+        { id: 'CID-TN-1002', name: 'Priya', address: '12 RS Puram, Coimbatore', status: 'Moved', dob: '1992-11-22', gender: 'Female', phone: '+91 8765432109' },
+        { id: 'CID-TN-1003', name: 'Karthik', address: '78 KK Nagar, Madurai', status: 'Deceased', dob: '1950-02-10', gender: 'Male', phone: '+91 7654321098' },
+        { id: 'CID-TN-1004', name: 'Kavya', address: '32 Thillai Nagar, Trichy', status: 'Active', dob: '1998-08-30', gender: 'Female', phone: '+91 6543210987' },
     ]);
 
     const filteredCitizens = citizens.filter(c =>
@@ -53,13 +53,13 @@ const RegistrySearch = () => {
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gray-900">Citizen Registry</h1>
                 <Button onClick={() => navigate('/census/enroll')}>
-                    <Plus size={18} className="mr-2" /> Add New Record
+                    <FaPlus size={18} className="mr-2" /> Add Record
                 </Button>
             </div>
 
             <div className="bg-white p-4 rounded-lg shadow flex gap-4">
                 <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input
                         type="text"
                         placeholder=""
@@ -69,7 +69,7 @@ const RegistrySearch = () => {
                     />
                 </div>
                 <button className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 flex items-center gap-2">
-                    <Filter className="h-4 w-4" /> Filter
+                    <FaFilter className="h-4 w-4" /> Filter
                 </button>
             </div>
 
@@ -98,11 +98,11 @@ const RegistrySearch = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button onClick={() => handleView(citizen)} className="text-gray-600 hover:text-gray-900 mr-4">
-                                        <Eye className="h-5 w-5" />
+                                    <button onClick={() => handleView(citizen)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="View Profile">
+                                        <FaEye size={18} />
                                     </button>
-                                    <button onClick={() => handleOpenEdit(citizen)} className="text-red-600 hover:text-red-900">
-                                        <Edit className="h-5 w-5" />
+                                    <button onClick={() => handleOpenEdit(citizen)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" title="Edit Record">
+                                        <FaEdit size={18} />
                                     </button>
                                 </td>
                             </tr>
