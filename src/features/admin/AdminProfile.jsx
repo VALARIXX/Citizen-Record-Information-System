@@ -59,7 +59,7 @@ const AdminProfile = () => {
                         <div>
                             <h3 className="text-lg font-semibold text-gray-900">{formData.name}</h3>
                             <p className="text-sm text-gray-500 flex items-center gap-1">
-                                <Shield size={14} /> Administrator
+                                <FaShieldAlt size={14} /> Administrator
                             </p>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ const AdminProfile = () => {
                     </div>
                     <div className="flex justify-end pt-4">
                         <Button type="submit" variant="secondary">
-                            <Lock size={16} className="mr-2" /> Update Password
+                            <FaLock size={16} className="mr-2" /> Update Password
                         </Button>
                     </div>
                 </form>

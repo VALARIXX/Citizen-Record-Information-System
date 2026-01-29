@@ -5,6 +5,8 @@ import { loginSuccess } from '../features/auth/authSlice';
 import { FaLayerGroup, FaShieldAlt, FaArrowRight, FaUserPlus, FaSignInAlt, FaCheckCircle, FaTimes } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import PhoneInput from '../components/PhoneInput';
+import { USERS } from '../data/loginCredentials';
+import Modal from '../components/Modal';
 
 const LandingPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(true);
@@ -15,6 +17,7 @@ const LandingPage = () => {
 
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
+    const [loginError, setLoginError] = useState('');
 
     const [registerData, setRegisterData] = useState({
         name: '',
@@ -26,6 +29,7 @@ const LandingPage = () => {
 
     const handleShowAuth = (isLogin) => {
         setIsLoginMode(isLogin);
+        setLoginError('');
         setShowAuthForm(true);
         setTimeout(() => {
             document.getElementById('auth-card')?.scrollIntoView({ behavior: 'smooth' });
@@ -35,30 +39,30 @@ const LandingPage = () => {
     const handleLogin = (e) => {
         e.preventDefault();
         setLoading(true);
+        setLoginError('');
 
         setTimeout(() => {
-            let role = 'CITIZEN';
-            if (loginEmail.includes('admin')) role = 'ADMIN';
-            else if (loginEmail.includes('officer')) role = 'OFFICER';
+            const foundUser = USERS.find(u => u.email === loginEmail && u.password === loginPassword);
 
-            const mockUser = {
-                name: loginEmail.split('@')[0],
-                email: loginEmail,
-                id: '12345',
-            };
+            if (foundUser) {
+                dispatch(loginSuccess({
+                    user: {
+                        name: foundUser.name,
+                        email: foundUser.email,
+                        id: foundUser.id,
+                    },
+                    role: foundUser.role,
+                }));
 
-            dispatch(loginSuccess({
-                user: mockUser,
-                token: 'mock-jwt-token',
-                role: role,
-            }));
+                const role = foundUser.role;
+                if (role === 'ADMIN') navigate('/admin');
+                else if (role === 'OFFICER') navigate('/census');
+                else navigate('/citizen');
+            } else {
+                setLoginError('Invalid email or password');
+            }
 
             setLoading(false);
-
-            if (role === 'ADMIN') navigate('/admin');
-            else if (role === 'OFFICER') navigate('/census');
-            else navigate('/citizen');
-
         }, 1000);
     };
 
@@ -75,7 +79,6 @@ const LandingPage = () => {
 
             dispatch(loginSuccess({
                 user: mockUser,
-                token: 'mock-jwt-token',
                 role: 'CITIZEN',
             }));
 
@@ -132,184 +135,186 @@ const LandingPage = () => {
                 </div>
             </header>
 
-            <main className="flex-grow flex flex-col lg:flex-row max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 gap-12 items-center">
+            <main className="flex-grow flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-20 items-center justify-center text-center">
 
-                <div className={`${showAuthForm ? 'lg:w-1/2' : 'lg:w-full text-center'} space-y-8 transition-all duration-300`}>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-red-700 text-xs font-semibold uppercase tracking-wide">
+                <div className="max-w-4xl space-y-10 animate-in fade-in zoom-in duration-500">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-red-700 text-xs font-semibold uppercase tracking-wide mx-auto">
                         <FaShieldAlt size={14} />
                         Official Government Portal
                     </div>
 
-                    <h1 className={`text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-[1.15] ${!showAuthForm ? 'max-w-3xl mx-auto' : ''}`}>
-                        Unified Digital Identity for <span className="text-red-700">All Citizens.</span>
+                    <h1 className="text-5xl lg:text-7xl font-extrabold text-gray-900 tracking-tight leading-[1.1] mb-6">
+                        Unified Digital Identity for <br /> <span className="text-red-700">All Citizens.</span>
                     </h1>
 
-                    <p className={`text-lg text-gray-600 leading-relaxed ${!showAuthForm ? 'max-w-2xl mx-auto' : 'max-w-xl'}`}>
+                    <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
                         Access government services, manage your household records, and request certificates seamlessly. A secure, transparent, and efficient system built for you.
                     </p>
 
-                    <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${!showAuthForm ? 'max-w-lg mx-auto' : 'max-w-lg'}`}>
+                    <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 max-w-3xl mx-auto py-6">
                         {[
                             "Instant Certificate Issuance",
                             "Secure Household Registry",
                             "Real-time Application Tracking",
                             "24/7 Digital Access"
                         ].map((feature, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
-                                <FaCheckCircle size={16} className="text-yellow-500 shrink-0" />
+                            <div key={idx} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                <FaCheckCircle size={18} className="text-yellow-500 shrink-0" />
                                 {feature}
                             </div>
                         ))}
                     </div>
 
-                    {!showAuthForm && (
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                            <button
-                                onClick={() => handleShowAuth(true)}
-                                className="px-8 py-3 text-lg font-semibold text-white bg-red-700 rounded-lg hover:bg-red-800 transition-colors shadow-lg shadow-red-500/20 flex items-center justify-center gap-2"
-                            >
-                                <FaSignInAlt size={20} />
-                                Sign In to Portal
-                            </button>
-                            <button
-                                onClick={() => handleShowAuth(false)}
-                                className="px-8 py-3 text-lg font-semibold text-red-700 bg-white border-2 border-red-200 rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2"
-                            >
-                                <FaUserPlus size={20} />
-                                Create Account
-                            </button>
-                        </div>
-                    )}
+                    <div className="flex flex-col sm:flex-row gap-5 justify-center mt-12">
+                        <button
+                            onClick={() => handleShowAuth(true)}
+                            className="px-10 py-4 text-lg font-bold text-white bg-red-700 rounded-2xl hover:bg-red-800 transition-all shadow-xl shadow-red-500/25 flex items-center justify-center gap-3 transform hover:-translate-y-1 active:scale-95"
+                        >
+                            <FaSignInAlt size={22} />
+                            Sign In to Portal
+                        </button>
+                        <button
+                            onClick={() => handleShowAuth(false)}
+                            className="px-10 py-4 text-lg font-bold text-red-700 bg-white border-2 border-red-100 rounded-2xl hover:bg-red-50 hover:border-red-200 transition-all flex items-center justify-center gap-3 transform hover:-translate-y-1 active:scale-95"
+                        >
+                            <FaUserPlus size={22} />
+                            Create Account
+                        </button>
+                    </div>
                 </div>
 
-                {showAuthForm && (
-                    <div id="auth-card" className="lg:w-1/2 w-full max-w-md mx-auto lg:mr-0 animate-in fade-in slide-in-from-right-4 duration-300">
-                        <div className="bg-white rounded-2xl shadow-xl shadow-red-900/5 border border-red-100 overflow-hidden relative">
-
+                <Modal
+                    isOpen={showAuthForm}
+                    onClose={() => setShowAuthForm(false)}
+                    title={isLoginMode ? "Sign In" : "Create Account"}
+                >
+                    <div className="relative">
+                        <div className="flex text-sm font-medium border-b border-gray-100 mb-6">
                             <button
-                                onClick={() => setShowAuthForm(false)}
-                                className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 transition-colors"
+                                onClick={() => { setIsLoginMode(true); setLoginError(''); }}
+                                className={`flex-1 py-3 flex items-center justify-center gap-2 transition-colors ${isLoginMode ? 'text-red-700 bg-red-50/50 border-b-2 border-red-700' : 'text-gray-500 hover:text-gray-700'}`}
                             >
-                                <FaTimes size={18} />
+                                <FaSignInAlt size={16} /> Sign In
                             </button>
+                            <button
+                                onClick={() => { setIsLoginMode(false); setLoginError(''); }}
+                                className={`flex-1 py-3 flex items-center justify-center gap-2 transition-colors ${!isLoginMode ? 'text-red-700 bg-red-50/50 border-b-2 border-red-700' : 'text-gray-500 hover:text-gray-700'}`}
+                            >
+                                <FaUserPlus size={16} /> New Account
+                            </button>
+                        </div>
 
-                            <div className="flex text-sm font-medium border-b border-gray-100">
-                                <button
-                                    onClick={() => setIsLoginMode(true)}
-                                    className={`flex-1 py-4 flex items-center justify-center gap-2 transition-colors ${isLoginMode ? 'text-red-700 bg-red-50/50 border-b-2 border-red-700' : 'text-gray-500 hover:text-gray-700'}`}
-                                >
-                                    <FaSignInAlt size={18} /> Sign In
-                                </button>
-                                <button
-                                    onClick={() => setIsLoginMode(false)}
-                                    className={`flex-1 py-4 flex items-center justify-center gap-2 transition-colors ${!isLoginMode ? 'text-red-700 bg-red-50/50 border-b-2 border-red-700' : 'text-gray-500 hover:text-gray-700'}`}
-                                >
-                                    <FaUserPlus size={18} /> New Account
-                                </button>
-                            </div>
-
-                            <div className="p-8">
-                                {isLoginMode ? (
-
-                                    <form onSubmit={handleLogin} className="space-y-5">
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-medium text-gray-700">Email Address</label>
-                                            <input
-                                                type="email"
-                                                required
-                                                value={loginEmail}
-                                                onChange={(e) => setLoginEmail(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-medium text-gray-700">Password</label>
-                                            <input
-                                                type="password"
-                                                required
-                                                value={loginPassword}
-                                                onChange={(e) => setLoginPassword(e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                            />
-                                        </div>
-
-                                        <button
-                                            type="submit"
-                                            disabled={loading}
-                                            className="w-full py-2.5 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-lg shadow-md shadow-red-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                                        >
-                                            {loading ? 'Accessing...' : 'Access Portal'}
-                                            {!loading && <FaArrowRight size={18} />}
-                                        </button>
-
-                                        <div className="text-center">
-                                            <a href="#" className="text-sm text-red-600 hover:text-red-700 font-medium">Forgot your password?</a>
-                                        </div>
-                                    </form>
-                                ) : (
-
-                                    <form onSubmit={handleRegister} className="space-y-4">
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-medium text-gray-700">Full Name</label>
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                required
-                                                value={registerData.name}
-                                                onChange={handleRegisterChange}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="space-y-1">
-                                                <label className="text-sm font-medium text-gray-700">Email</label>
-                                                <input
-                                                    type="email"
-                                                    name="email"
-                                                    required
-                                                    value={registerData.email}
-                                                    onChange={handleRegisterChange}
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                                />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <label className="text-sm font-medium text-gray-700">Phone</label>
-                                                <PhoneInput
-                                                    value={registerData.phone}
-                                                    onChange={(phone) => setRegisterData(prev => ({ ...prev, phone }))}
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <label className="text-sm font-medium text-gray-700">Password</label>
-                                            <input
-                                                type="password"
-                                                name="password"
-                                                required
-                                                value={registerData.password}
-                                                onChange={handleRegisterChange}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
-                                            />
-                                        </div>
-
-                                        <button
-                                            type="submit"
-                                            disabled={loading}
-                                            className="w-full py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-md shadow-yellow-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                                        >
-                                            {loading ? 'Creating Account...' : 'Create Citizen Account'}
-                                            {!loading && <FaUserPlus size={18} />}
-                                        </button>
-                                    </form>
+                        {isLoginMode ? (
+                            <form onSubmit={handleLogin} className="space-y-4">
+                                {loginError && (
+                                    <div className="p-3 rounded-lg bg-red-50 text-red-700 text-sm border border-red-100 flex items-center gap-2 animate-in fade-in duration-200">
+                                        <FaShieldAlt size={14} className="flex-shrink-0" />
+                                        {loginError}
+                                    </div>
                                 )}
-                            </div>
-                            <div className="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center text-xs text-gray-500">
-                                By continuing, you agree to the Terms of Service and Privacy Policy of the Valarixx Government.
-                            </div>
+                                <div className="space-y-1 text-left">
+                                    <label className="text-sm font-medium text-gray-700">Email Address</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={loginEmail}
+                                        onChange={(e) => setLoginEmail(e.target.value)}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                        placeholder="your@email.com"
+                                    />
+                                </div>
+                                <div className="space-y-1 text-left">
+                                    <label className="text-sm font-medium text-gray-700">Password</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={loginPassword}
+                                        onChange={(e) => setLoginPassword(e.target.value)}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full py-3 bg-red-700 hover:bg-red-800 text-white font-bold rounded-xl shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                                >
+                                    {loading ? 'Accessing...' : 'Access Portal'}
+                                    {!loading && <FaArrowRight size={18} />}
+                                </button>
+
+                                <div className="text-center pt-2">
+                                    <a href="#" className="text-xs text-red-600 hover:text-red-700 font-medium">Forgot your password?</a>
+                                </div>
+                            </form>
+                        ) : (
+                            <form onSubmit={handleRegister} className="space-y-4">
+                                <div className="space-y-1 text-left">
+                                    <label className="text-sm font-medium text-gray-700">Full Name</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        required
+                                        value={registerData.name}
+                                        onChange={handleRegisterChange}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                        placeholder="Full Name"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-1 text-left">
+                                        <label className="text-sm font-medium text-gray-700">Email</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            required
+                                            value={registerData.email}
+                                            onChange={handleRegisterChange}
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                            placeholder="email@example.com"
+                                        />
+                                    </div>
+                                    <div className="space-y-1 text-left">
+                                        <label className="text-sm font-medium text-gray-700">Phone</label>
+                                        <PhoneInput
+                                            value={registerData.phone}
+                                            onChange={(phone) => setRegisterData(prev => ({ ...prev, phone }))}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-1 text-left">
+                                    <label className="text-sm font-medium text-gray-700">Password</label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        required
+                                        value={registerData.password}
+                                        onChange={handleRegisterChange}
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full py-3 bg-red-700 hover:bg-red-800 text-white font-bold rounded-xl shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                                >
+                                    {loading ? 'Creating Account...' : 'Create Citizen Account'}
+                                    {!loading && <FaUserPlus size={18} />}
+                                </button>
+                            </form>
+                        )}
+
+
+
+                        <div className="mt-6 text-center text-[10px] text-gray-400">
+                            By continuing, you agree to the Terms of Service and Privacy Policy of the Valarixx Government.
                         </div>
                     </div>
-                )}
+                </Modal>
 
             </main>
 

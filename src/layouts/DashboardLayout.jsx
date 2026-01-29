@@ -17,12 +17,8 @@ const DashboardLayout = () => {
             <Header />
 
             <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                
-                <div className="mb-6 border-b border-gray-200 pb-4">
-                    <nav className="text-sm font-medium text-gray-500">
-                        CivicID / {getBreadcrumbs().join(' / ')}
-                    </nav>
-                </div>
+
+
 
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <Outlet />

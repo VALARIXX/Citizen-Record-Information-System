@@ -107,8 +107,8 @@ const CertificateRequest = () => {
         switch (requestData.type) {
             case 'Birth Certificate':
                 return (
-                    <div className="space-y-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
-                        <h4 className="font-medium text-blue-800 text-sm">Birth Certificate Details</h4>
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <h4 className="font-medium text-gray-800 text-sm">Birth Certificate Details</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Input
                                 label="Child's Full Name"
@@ -202,8 +202,8 @@ const CertificateRequest = () => {
 
             case 'Income Certificate':
                 return (
-                    <div className="space-y-4 p-4 bg-green-50 rounded-lg border border-green-100">
-                        <h4 className="font-medium text-green-800 text-sm">Income Certificate Details</h4>
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <h4 className="font-medium text-gray-800 text-sm">Income Certificate Details</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Input
                                 label="Annual Income (₹)"
@@ -255,8 +255,8 @@ const CertificateRequest = () => {
 
             case 'Community Certificate':
                 return (
-                    <div className="space-y-4 p-4 bg-purple-50 rounded-lg border border-purple-100">
-                        <h4 className="font-medium text-purple-800 text-sm">Community Certificate Details</h4>
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <h4 className="font-medium text-gray-800 text-sm">Community Certificate Details</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Input
                                 label="Community/Caste Name"
@@ -293,8 +293,8 @@ const CertificateRequest = () => {
 
             case 'Residence Certificate':
                 return (
-                    <div className="space-y-4 p-4 bg-orange-50 rounded-lg border border-orange-100">
-                        <h4 className="font-medium text-orange-800 text-sm">Residence Certificate Details</h4>
+                    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <h4 className="font-medium text-gray-800 text-sm">Residence Certificate Details</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Current Residence Address</label>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { FaShieldAlt, FaUsers, FaActivity, FaCog, FaChartBar, FaArrowRight, FaUserPlus, FaSearch } from 'react-icons/fa';
+import { FaShieldAlt, FaUsers, FaCog, FaChartBar, FaArrowRight, FaUserPlus, FaSearch } from 'react-icons/fa';
+import { FiActivity } from 'react-icons/fi';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { useNavigate, Link } from 'react-router-dom';
@@ -11,7 +12,7 @@ const AdminDashboard = () => {
 
     const stats = [
         { title: 'Total Users', value: '1,284', icon: FaUsers, color: 'text-blue-600', bg: 'bg-blue-50' },
-        { title: 'System Health', value: '99.9%', icon: FaActivity, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { title: 'System Health', value: '99.9%', icon: FiActivity, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         { title: 'Security Alerts', value: '0', icon: FaShieldAlt, color: 'text-red-600', bg: 'bg-red-50' },
     ];
 

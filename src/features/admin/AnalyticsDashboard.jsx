@@ -4,7 +4,8 @@ import {
     PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts';
 import Card from '../../components/Card';
-import { FaChartLine, FaUsers, FaHome, FaActivity, FaArrowUp } from 'react-icons/fa';
+import { FaChartLine, FaUsers, FaHome, FaArrowUp } from 'react-icons/fa';
+import { FiActivity } from 'react-icons/fi';
 
 const AnalyticsDashboard = () => {
     const populationData = [
@@ -25,7 +26,7 @@ const AnalyticsDashboard = () => {
     const stats = [
         { title: 'Total Enrollments', value: '12,482', change: '+12%', icon: FaUsers, color: 'text-blue-600', bg: 'bg-blue-50' },
         { title: 'Active Residents', value: '11,205', change: '+5%', icon: FaHome, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-        { title: 'System Activity', value: '98.2%', change: '+0.5%', icon: FaActivity, color: 'text-purple-600', bg: 'bg-purple-50' },
+        { title: 'System Activity', value: '98.2%', change: '+0.5%', icon: FiActivity, color: 'text-purple-600', bg: 'bg-purple-50' },
         { title: 'Growth Rate', value: '3.4%', change: '+1.2%', icon: FaChartLine, color: 'text-orange-600', bg: 'bg-orange-50' },
     ];
 

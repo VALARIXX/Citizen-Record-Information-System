@@ -29,7 +29,6 @@ const Login = () => {
                         email: foundUser.email,
                         id: foundUser.id,
                     },
-                    token: 'mock-jwt-token',
                     role: foundUser.role,
                 }));
 
@@ -160,23 +159,7 @@ const Login = () => {
                             </div>
                         </form>
 
-                        <div className="mt-8 pt-6 border-t border-gray-100">
-                            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Demo Credentials</p>
-                            <div className="grid grid-cols-1 gap-2">
-                                <div className="flex justify-between text-xs p-2 bg-blue-50/50 rounded-lg">
-                                    <span className="font-medium text-blue-700">Admin</span>
-                                    <code className="text-blue-600">gokul@civic.id / password123</code>
-                                </div>
-                                <div className="flex justify-between text-xs p-2 bg-emerald-50/50 rounded-lg">
-                                    <span className="font-medium text-emerald-700">Officer</span>
-                                    <code className="text-emerald-600">abdul@civic.id / password123</code>
-                                </div>
-                                <div className="flex justify-between text-xs p-2 bg-red-50/50 rounded-lg">
-                                    <span className="font-medium text-red-700">Citizen</span>
-                                    <code className="text-red-600">arjun@civic.id / password123</code>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                 </div>

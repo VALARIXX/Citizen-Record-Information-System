@@ -38,7 +38,6 @@ const CitizenProfile = () => {
 
         dispatch(loginSuccess({
             user: { ...user, name: formData.name, email: formData.email },
-            token: localStorage.getItem('token'),
             role: 'CITIZEN'
         }));
 

@@ -11,7 +11,7 @@ const CustomPhoneInput = ({ label, value, onChange, error, required, className =
                 </label>
             )}
             <PhoneInput
-                country={"us"}
+                country={"in"}
                 value={value}
                 onChange={onChange}
                 placeholder=""

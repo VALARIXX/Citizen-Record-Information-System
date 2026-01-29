@@ -26,43 +26,36 @@ const router = createBrowserRouter([
         errorElement: <ErrorBoundary />,
     },
     {
-        path: '/',
-        element: <DashboardLayout />,
-        errorElement: <ErrorBoundary />,
+        path: 'citizen',
+        element: <ProtectedRoute allowedRoles={['CITIZEN']} />,
         children: [
-            {
-                path: 'citizen',
-                element: <ProtectedRoute allowedRoles={['CITIZEN']} />,
-                children: [
-                    { path: '', element: <CitizenDashboard /> },
-                    { path: 'profile', element: <CitizenProfile /> },
-                    { path: 'household', element: <HouseholdView /> },
-                    { path: 'certificates', element: <CertificateRequest /> },
-                ]
-            },
-            {
-                path: 'census',
-                element: <ProtectedRoute allowedRoles={['OFFICER']} />,
-                children: [
-                    { path: '', element: <OfficerDashboard /> },
-                    { path: 'search', element: <RegistrySearch /> },
-                    { path: 'enroll', element: <EnrollmentForm /> },
-                    { path: 'tasks', element: <ApplicationProcessing /> },
-                    { path: 'profile', element: <OfficerProfile /> },
-                ]
-            },
-            {
-                path: 'admin',
-                element: <ProtectedRoute allowedRoles={['ADMIN']} />,
-                children: [
-                    { path: '', element: <AdminDashboard /> },
-                    { path: 'analytics', element: <AnalyticsDashboard /> },
-                    { path: 'users', element: <UserManagement /> },
-                    { path: 'logs', element: <SystemLogs /> },
-                    { path: 'profile', element: <AdminProfile /> },
-                ]
-            },
-        ],
+            { path: '', element: <CitizenDashboard /> },
+            { path: 'profile', element: <CitizenProfile /> },
+            { path: 'household', element: <HouseholdView /> },
+            { path: 'certificates', element: <CertificateRequest /> },
+        ]
+    },
+    {
+        path: 'census',
+        element: <ProtectedRoute allowedRoles={['OFFICER']} />,
+        children: [
+            { path: '', element: <OfficerDashboard /> },
+            { path: 'search', element: <RegistrySearch /> },
+            { path: 'enroll', element: <EnrollmentForm /> },
+            { path: 'tasks', element: <ApplicationProcessing /> },
+            { path: 'profile', element: <OfficerProfile /> },
+        ]
+    },
+    {
+        path: 'admin',
+        element: <ProtectedRoute allowedRoles={['ADMIN']} />,
+        children: [
+            { path: '', element: <AdminDashboard /> },
+            { path: 'analytics', element: <AnalyticsDashboard /> },
+            { path: 'users', element: <UserManagement /> },
+            { path: 'logs', element: <SystemLogs /> },
+            { path: 'profile', element: <AdminProfile /> },
+        ]
     },
 ]);
 
