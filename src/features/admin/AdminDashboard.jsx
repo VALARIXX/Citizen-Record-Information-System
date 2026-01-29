@@ -26,10 +26,10 @@ const AdminDashboard = () => {
                         user management, and high-level analytics.
                     </p>
                     <div className="mt-6 flex gap-3">
-                        <Button onClick={() => navigate('/admin/users')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
+                        <Button onClick={() => navigate('/admin/users')} className="bg-yellow-500 text-red-900 hover:bg-red-100">
                             <FaUserPlus size={20} className="mr-2" /> Manage Users
                         </Button>
-                        <Button onClick={() => navigate('/admin/analytics')} className="bg-yellow-500 text-red-900 hover:bg-yellow-400">
+                        <Button onClick={() => navigate('/admin/analytics')} className="bg-yellow-500 text-red-900 hover:bg-red-100">
                             <FaChartBar size={18} className="mr-2" /> Analytics Overview
                         </Button>
                     </div>

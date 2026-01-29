@@ -81,20 +81,32 @@ const Header = ({ onMenuClick }) => {
                         </button>
                     </div>
 
-                    <div className="hidden lg:flex lg:items-center lg:ml-4 gap-4">
-                        <div className="relative ml-3">
-                            <div className="flex items-center gap-3">
-                                <div className="text-right hidden xl:block">
-                                    <div className="text-sm font-semibold text-gray-900">{user?.name}</div>
-                                    <div className="text-[10px] text-gray-500 uppercase tracking-wider">{role?.toLowerCase()}</div>
-                                </div>
-                                <button
-                                    onClick={() => setProfileOpen(!profileOpen)}
-                                    className="bg-red-700 h-9 w-9 rounded-full flex items-center justify-center text-white font-bold focus:outline-none ring-2 ring-transparent hover:ring-red-200 transition-all shadow-sm"
-                                >
+                    <div className="hidden lg:flex lg:items-center lg:ml-4">
+                        <div className="relative">
+                            <button
+                                onClick={() => setProfileOpen(!profileOpen)}
+                                className="flex items-center gap-3 p-1.5 px-2 rounded-xl border border-gray-100 bg-white/50 hover:bg-white hover:border-red-100 hover:shadow-sm transition-all duration-200 group focus:outline-none"
+                            >
+                                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white text-xs font-bold shadow-sm group-hover:scale-105 transition-transform">
                                     {user?.name?.charAt(0).toUpperCase()}
-                                </button>
-                            </div>
+                                </div>
+                                <div className="text-left">
+                                    <div className="text-xs font-bold text-gray-900 leading-tight group-hover:text-red-700 transition-colors">
+                                        {user?.name}
+                                    </div>
+                                    <div className="text-[10px] font-medium text-gray-500 uppercase tracking-tighter leading-tight">
+                                        {role?.toLowerCase()}
+                                    </div>
+                                </div>
+                                <svg
+                                    className={`w-4 h-4 text-gray-400 group-hover:text-red-500 transition-transform duration-200 ${profileOpen ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
 
                             {profileOpen && (
                                 <>

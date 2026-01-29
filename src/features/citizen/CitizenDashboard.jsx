@@ -32,10 +32,10 @@ const CitizenDashboard = () => {
                         Everything looks good with your profile today.
                     </p>
                     <div className="mt-6 flex gap-3">
-                        <Button onClick={() => navigate('/citizen/profile')} className="bg-yellow-500 text-red-800 hover:bg-white-400">
+                        <Button onClick={() => navigate('/citizen/profile')} className="bg-yellow-500 text-red-900 hover:bg-red-100">
                             View Profile
                         </Button>
-                        <Button onClick={() => navigate('/citizen/certificates')} className="bg-yellow-500 text-red-800 hover:bg-white-400">
+                        <Button onClick={() => navigate('/citizen/certificates')} className="bg-yellow-500 text-red-900 hover:bg-red-100">
                             Request Service
                         </Button>
                     </div>
