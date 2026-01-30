@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginSuccess } from '../features/auth/authSlice';
-import { FaLayerGroup, FaShieldAlt, FaArrowRight, FaUserPlus, FaSignInAlt, FaCheckCircle, FaTimes } from 'react-icons/fa';
+import { FaLayerGroup, FaShieldAlt, FaArrowRight, FaUserPlus, FaSignInAlt, FaCheckCircle } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import PhoneInput from '../components/PhoneInput';
 import { USERS } from '../data/loginCredentials';

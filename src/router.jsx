@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import DashboardLayout from './layouts/DashboardLayout';
 import ProtectedRoute from './features/shared/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import CitizenDashboard from './features/citizen/CitizenDashboard';
@@ -17,13 +16,12 @@ import AdminProfile from './features/admin/AdminProfile';
 import OfficerProfile from './features/census/OfficerProfile';
 import OfficerDashboard from './features/census/OfficerDashboard';
 import AdminDashboard from './features/admin/AdminDashboard';
-import ErrorBoundary from './components/ErrorBoundary';
+
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <LandingPage />,
-        errorElement: <ErrorBoundary />,
     },
     {
         path: 'citizen',

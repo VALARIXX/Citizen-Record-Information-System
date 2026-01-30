@@ -34,7 +34,7 @@ const CitizenProfile = () => {
 
     const handleSave = () => {
 
-        console.log('Saving profile:', formData);
+
 
         dispatch(loginSuccess({
             user: { ...user, name: formData.name, email: formData.email },
@@ -51,7 +51,7 @@ const CitizenProfile = () => {
 
     const handlePhotoUpload = () => {
 
-        console.log('Opening photo upload...');
+
     };
 
     return (

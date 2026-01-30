@@ -415,18 +415,6 @@ const CertificateRequest = () => {
                         required
                     />
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Urgency</label>
-                        <select
-                            value={requestData.urgency}
-                            onChange={(e) => setRequestData({ ...requestData, urgency: e.target.value })}
-                            className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
-                        >
-                            <option value="Normal">Normal (5-7 days)</option>
-                            <option value="Urgent">Urgent (2-3 days)</option>
-                            <option value="Express">Express (24 hours)</option>
-                        </select>
-                    </div>
 
                     <Input
                         label="Delivery Address"
@@ -454,7 +442,7 @@ const CertificateRequest = () => {
                     </div>
 
                     <div className="bg-yellow-50 p-3 rounded-md border border-yellow-100 text-sm text-yellow-800">
-                        <strong>Note:</strong> Standard processing time is 3-5 business days. You will be notified once the certificate is ready.
+                        <strong>Note:</strong> This process will take upto 3-5 business days. You will be notified once the certificate is ready.
                     </div>
 
                     <div className="flex justify-end gap-3 pt-4">
