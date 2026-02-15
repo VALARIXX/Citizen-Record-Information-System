@@ -7,6 +7,8 @@ import RegistrySearch from './features/census/RegistrySearch';
 import AnalyticsDashboard from './features/admin/AnalyticsDashboard';
 import CitizenProfile from './features/citizen/CitizenProfile';
 import CertificateRequest from './features/citizen/CertificateRequest';
+import PaymentPage from './features/citizen/PaymentPage';
+import PaymentSuccess from './features/citizen/PaymentSuccess';
 import HouseholdView from './features/citizen/HouseholdView';
 import EnrollmentForm from './features/census/EnrollmentForm';
 import ApplicationProcessing from './features/census/ApplicationProcessing';
@@ -31,6 +33,8 @@ const router = createBrowserRouter([
             { path: 'profile', element: <CitizenProfile /> },
             { path: 'household', element: <HouseholdView /> },
             { path: 'certificates', element: <CertificateRequest /> },
+            { path: 'payment', element: <PaymentPage /> },
+            { path: 'payment/success', element: <PaymentSuccess /> },
         ]
     },
     {

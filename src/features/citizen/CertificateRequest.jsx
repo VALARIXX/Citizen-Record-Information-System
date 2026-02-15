@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
 import Input from '../../components/Input';
@@ -50,48 +51,22 @@ const CertificateRequest = () => {
         { id: 3, type: 'Community Certificate', issuedDate: null, status: 'Processing', downloadable: false },
     ]);
 
+    const navigate = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newCert = {
-            id: certificates.length + 1,
-            type: requestData.type,
-            issuedDate: null,
-            status: 'Processing',
-            downloadable: false
-        };
-        setCertificates([...certificates, newCert]);
-        setIsModalOpen(false);
 
-        setRequestData({
-            type: 'Birth Certificate',
-            purpose: '',
-            urgency: 'Normal',
-            deliveryAddress: '',
-            phone: '',
-            phoneCountry: '+91',
-            notes: '',
-            childName: '',
-            childDob: '',
-            placeOfBirth: '',
-            fatherName: '',
-            motherName: '',
-            hospitalName: '',
-            deceasedName: '',
-            dateOfDeath: '',
-            placeOfDeath: '',
-            causeOfDeath: '',
-            relationToDeceased: '',
-            annualIncome: '',
-            sourceOfIncome: '',
-            employerName: '',
-            employmentType: '',
-            communityName: '',
-            subCaste: '',
-            religion: '',
-            currentAddress: '',
-            durationOfResidence: '',
-            propertyOwnership: ''
-        });
+        // Generate a random request ID
+        const requestId = 'REQ' + Math.floor(100000 + Math.random() * 900000);
+
+        // Determine amount based on certificate type (mock logic)
+        let amount = 50; // Default
+        if (requestData.type === 'Income Certificate') amount = 100;
+        if (requestData.type === 'Community Certificate') amount = 75;
+
+        // Navigate to payment page with state
+        navigate(`/citizen/payment?requestId=${requestId}&type=${encodeURIComponent(requestData.type)}&amount=${amount}`);
+        setIsModalOpen(false);
     };
 
     const getStatusStyles = (status) => {
