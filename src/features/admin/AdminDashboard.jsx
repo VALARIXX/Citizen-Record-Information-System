@@ -9,7 +9,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const AdminDashboard = () => {
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-
+ 
     const stats = [
         { title: 'Total Users', value: '1,284', icon: FaUsers, color: 'text-blue-600', bg: 'bg-blue-50' },
         { title: 'System Health', value: '99.9%', icon: FiActivity, color: 'text-emerald-600', bg: 'bg-emerald-50' },
