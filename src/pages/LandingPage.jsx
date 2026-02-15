@@ -18,9 +18,12 @@ const LandingPage = () => {
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginError, setLoginError] = useState('');
+    const [registerError, setRegisterError] = useState('');
+    const [registerSuccess, setRegisterSuccess] = useState('');
 
     const [registerData, setRegisterData] = useState({
         name: '',
+        aadharNumber: '',
         email: '',
         phone: '',
         password: '',
@@ -68,22 +71,37 @@ const LandingPage = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
+        setRegisterError('');
+        setRegisterSuccess('');
+
+        if (registerData.password !== registerData.confirmPassword) {
+            setRegisterError('Passwords do not match');
+            return;
+        }
+
         setLoading(true);
 
         setTimeout(() => {
-            const mockUser = {
-                name: registerData.name,
-                email: registerData.email,
-                id: 'new-user-123',
-            };
-
-            dispatch(loginSuccess({
-                user: mockUser,
-                role: 'CITIZEN',
-            }));
-
+            // Mock successful registration
             setLoading(false);
-            navigate('/citizen');
+            setRegisterSuccess('Account created successfully! Please sign in.');
+
+            // Clear form after success
+            setRegisterData({
+                name: '',
+                aadharNumber: '',
+                email: '',
+                phone: '',
+                password: '',
+                confirmPassword: ''
+            });
+
+            // Optional: Switch to login mode after a delay
+            setTimeout(() => {
+                setIsLoginMode(true);
+                setRegisterSuccess('');
+            }, 2000);
+
         }, 1200);
     };
 
@@ -250,17 +268,46 @@ const LandingPage = () => {
                             </form>
                         ) : (
                             <form onSubmit={handleRegister} className="space-y-4">
-                                <div className="space-y-1 text-left">
-                                    <label className="text-sm font-medium text-gray-700">Full Name</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={registerData.name}
-                                        onChange={handleRegisterChange}
-                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
-                                        placeholder="Full Name"
-                                    />
+                                {registerError && (
+                                    <div className="p-3 rounded-lg bg-red-50 text-red-700 text-sm border border-red-100 flex items-center gap-2 animate-in fade-in duration-200">
+                                        <FaShieldAlt size={14} className="flex-shrink-0" />
+                                        {registerError}
+                                    </div>
+                                )}
+                                {registerSuccess && (
+                                    <div className="p-3 rounded-lg bg-green-50 text-green-700 text-sm border border-green-100 flex items-center gap-2 animate-in fade-in duration-200">
+                                        <FaCheckCircle size={14} className="flex-shrink-0" />
+                                        {registerSuccess}
+                                    </div>
+                                )}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-1 text-left">
+                                        <label className="text-sm font-medium text-gray-700">User Name</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            required
+                                            value={registerData.name}
+                                            onChange={handleRegisterChange}
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                            placeholder="User Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-1 text-left">
+                                        <label className="text-sm font-medium text-gray-700">Aadhar Number</label>
+                                        <input
+                                            type="text"
+                                            name="aadharNumber"
+                                            required
+                                            value={registerData.aadharNumber}
+                                            onChange={handleRegisterChange}
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                            placeholder="12-digit Aadhar Number"
+                                            maxLength={12}
+                                            pattern="\d{12}"
+                                            title="Aadhar number must be 12 digits"
+                                        />
+                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-1 text-left">
@@ -284,17 +331,31 @@ const LandingPage = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="space-y-1 text-left">
-                                    <label className="text-sm font-medium text-gray-700">Password</label>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        required
-                                        value={registerData.password}
-                                        onChange={handleRegisterChange}
-                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
-                                        placeholder="••••••••"
-                                    />
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-1 text-left">
+                                        <label className="text-sm font-medium text-gray-700">Password</label>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            required
+                                            value={registerData.password}
+                                            onChange={handleRegisterChange}
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
+                                    <div className="space-y-1 text-left">
+                                        <label className="text-sm font-medium text-gray-700">Confirm Password</label>
+                                        <input
+                                            type="password"
+                                            name="confirmPassword"
+                                            required
+                                            value={registerData.confirmPassword}
+                                            onChange={handleRegisterChange}
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all text-sm"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
                                 </div>
 
                                 <button
