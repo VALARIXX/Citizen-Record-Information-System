@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import PhoneInput from '../../components/PhoneInput';
-import { FaUser, FaUsers, FaHome, FaArrowRight, FaPlus } from 'react-icons/fa';
+import { FaUser, FaUsers, FaHome, FaArrowRight, FaPlus, FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { fetchCitizenProfile, fetchHouseholdMembers, enrollCitizen } from './citizenSlice';
+import { calculateAge } from '../../utils/calculateAge';
 
 const HouseholdView = () => {
+    const { user } = useSelector((state) => state.auth);
+    const { profile, householdMembers, loading } = useSelector((state) => state.citizen);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [members, setMembers] = useState([]);
+    const [household, setHousehold] = useState({
+        address: 'Loading...',
+        familyId: '...',
+    });
+
     const [newMember, setNewMember] = useState({
         name: '',
         relation: '',
@@ -21,16 +33,62 @@ const HouseholdView = () => {
         idNumber: ''
     });
 
-    const [members, setMembers] = useState([
-        { id: 1, name: 'Arjun', relation: 'Head of Household', age: 34, gender: 'Male', status: 'Active', avatar: 'AR' },
-        { id: 2, name: 'Priya', relation: 'Spouse', age: 32, gender: 'Female', status: 'Active', avatar: 'PR' },
-        { id: 3, name: 'Karthik', relation: 'Son', age: 8, gender: 'Male', status: 'Active', avatar: 'KA' },
-        { id: 4, name: 'Kavya', relation: 'Daughter', age: 5, gender: 'Female', status: 'Active', avatar: 'KV' },
-    ]);
+    useEffect(() => {
+        if (user?.id || user?.aadharNumber) {
+            const identifier = user.aadharNumber || user.id;
+            dispatch(fetchCitizenProfile(identifier));
+        }
+    }, [user, dispatch]);
 
-    const household = {
-        address: 'No. 45, Anna Salai, T. Nagar, Chennai, Tamil Nadu - 600017',
-        familyId: 'FAM-TN-2024-8821',
+    useEffect(() => {
+        if (profile?.householdId) {
+            dispatch(fetchHouseholdMembers(profile.householdId));
+            setHousehold({
+                address: profile.address || 'Address not registered',
+                familyId: profile.householdId,
+            });
+        } else if (profile) {
+            setHousehold({
+                address: profile.address || 'Address not registered',
+                familyId: 'HID-NOT-FOUND',
+            });
+            // Fallback: strictly at least the user themselves
+            setMembers([{
+                id: profile.id || profile.citizenId,
+                name: profile.fullName || user.name,
+                relation: 'Head of Household',
+                age: calculateAge(profile.dateOfBirth),
+                gender: profile.gender,
+                status: 'Active',
+                avatar: (profile.fullName?.charAt(0) || 'U').toUpperCase()
+            }]);
+        }
+    }, [profile, dispatch, user.name]);
+
+    useEffect(() => {
+        if (householdMembers?.length > 0) {
+            setMembers(householdMembers.map(m => ({
+                id: m.id || m.citizenId,
+                name: m.fullName || m.name,
+                relation: m.relationshipToHead || 'Member',
+                age: calculateAge(m.dateOfBirth || m.dob),
+                gender: m.gender,
+                status: 'Active',
+                avatar: (m.fullName?.charAt(0) || m.name?.charAt(0) || 'U').toUpperCase()
+            })));
+        }
+    }, [householdMembers]);
+
+    const calculateAge = (dob) => {
+        if (!dob) return 'N/A';
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     };
 
     const handleAddMember = (e) => {
@@ -68,7 +126,7 @@ const HouseholdView = () => {
                             <FaHome size={28} />
                         </div>
                         <div>
-                            <h2 className="text-lg font-bold text-gray-900">The Arjun's Family</h2>
+                            <h2 className="text-lg font-bold text-gray-900">Family Household</h2>
                             <p className="text-sm text-gray-600">{household.address}</p>
                         </div>
                     </div>

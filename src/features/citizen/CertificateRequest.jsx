@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import PhoneInput from '../../components/PhoneInput';
-import { FaFileAlt, FaDownload, FaClock, FaPlus, FaCheckCircle } from 'react-icons/fa';
+import { FaFileAlt, FaDownload, FaClock, FaPlus, FaCheckCircle, FaSpinner } from 'react-icons/fa';
+import { fetchCitizenRequests, createCertificateRequest } from './certificateSlice';
 
 const CertificateRequest = () => {
+    const { user } = useSelector((state) => state.auth);
+    const { requests, loading } = useSelector((state) => state.certificate);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [requestData, setRequestData] = useState({
         type: 'Birth Certificate',
@@ -45,28 +52,34 @@ const CertificateRequest = () => {
         propertyOwnership: ''
     });
 
-    const [certificates, setCertificates] = useState([
-        { id: 1, type: 'Birth Certificate', issuedDate: '2024-05-15', status: 'Issued', downloadable: true },
-        { id: 2, type: 'Income Certificate', issuedDate: '2024-12-01', status: 'Issued', downloadable: true },
-        { id: 3, type: 'Community Certificate', issuedDate: null, status: 'Processing', downloadable: false },
-    ]);
+    const [certificates, setCertificates] = useState([]);
 
-    const navigate = useNavigate();
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Generate a random request ID
-        const requestId = 'REQ' + Math.floor(100000 + Math.random() * 900000);
 
         // Determine amount based on certificate type (mock logic)
         let amount = 50; // Default
         if (requestData.type === 'Income Certificate') amount = 100;
         if (requestData.type === 'Community Certificate') amount = 75;
 
-        // Navigate to payment page with state
-        navigate(`/citizen/payment?requestId=${requestId}&type=${encodeURIComponent(requestData.type)}&amount=${amount}`);
-        setIsModalOpen(false);
+        try {
+            const payload = {
+                citizenId: user?.id || 'GUEST', // Fallback if testing without login
+                type: requestData.type,
+                status: 'PENDING',
+                requestDetails: JSON.stringify(requestData) // Store dynamic form data
+            };
+
+            const resultAction = await dispatch(createCertificateRequest(payload)).unwrap();
+            const newRequest = resultAction;
+
+            // Navigate to payment page with state
+            navigate(`/citizen/payment?requestId=${newRequest.requestId}&type=${encodeURIComponent(requestData.type)}&amount=${amount}`);
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error("Failed to submit request", error);
+            alert("Failed to submit request: " + (error.message || error));
+        }
     };
 
     const getStatusStyles = (status) => {
@@ -77,6 +90,16 @@ const CertificateRequest = () => {
             default: return 'bg-gray-100 text-gray-700 border-gray-200';
         }
     };
+
+    // Use requests from Redux store instead of local state
+    const displayCertificates = requests || [];
+
+    // Fetch certificates on component mount
+    useEffect(() => {
+        if (user?.id) {
+            dispatch(fetchCitizenRequests(user.id));
+        }
+    }, [user, dispatch]);
 
     const renderCertificateFields = () => {
         switch (requestData.type) {
@@ -335,8 +358,8 @@ const CertificateRequest = () => {
             </div>
 
             <div className="grid gap-4">
-                {certificates.map((cert) => (
-                    <Card key={cert.id} className="flex flex-col md:flex-row md:items-center justify-between p-4">
+                {displayCertificates.map((cert) => (
+                    <Card key={cert.requestId || cert.id} className="flex flex-col md:flex-row md:items-center justify-between p-4">
                         <div className="flex items-center gap-4">
                             <div className={`p-3 rounded-lg ${cert.status === 'Issued' ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'}`}>
                                 <FaFileAlt size={24} />
@@ -362,6 +385,16 @@ const CertificateRequest = () => {
                         </div>
                     </Card>
                 ))}
+                {loading && (
+                    <div className="flex justify-center p-4">
+                        <FaSpinner className="animate-spin text-2xl text-red-600" />
+                    </div>
+                )}
+                {!loading && displayCertificates.length === 0 && (
+                    <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                        <p className="text-gray-500">No certificate requests found.</p>
+                    </div>
+                )}
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Request New Certificate" size="lg">

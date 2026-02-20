@@ -1,58 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
-import { FaUser, FaMapMarkerAlt, FaPhone, FaEnvelope, FaSave, FaTimes, FaCamera } from 'react-icons/fa';
-import { loginSuccess } from '../auth/authSlice';
+import { FaUser, FaMapMarkerAlt, FaPhone, FaEnvelope, FaSave, FaTimes, FaCamera, FaSpinner } from 'react-icons/fa';
+import { updateUser } from '../auth/authSlice';
 import { calculateAge } from '../../utils/calculateAge';
 import PhoneInput from '../../components/PhoneInput';
+import { fetchCitizenProfile, updateCitizenProfile, enrollCitizen } from './citizenSlice';
 
 const CitizenProfile = () => {
     const { user } = useSelector((state) => state.auth);
+    const { profile, loading, error } = useSelector((state) => state.citizen);
     const dispatch = useDispatch();
     const [isEditing, setIsEditing] = useState(false);
+    const [isNewProfile, setIsNewProfile] = useState(false);
 
     const [formData, setFormData] = useState({
-        ...user,
-        address: '12, Bharathi Street, Gandhi Nagar, Madurai, Tamil Nadu - 625020',
-        dob: '1995-08-25',
-        phone: '+91 98456 78901',
-        occupation: 'Software Developer',
-        bloodGroup: 'B+',
-        nationality: 'Indian',
-        fatherName: 'Ranganathan',
-        motherName: 'Meenakshi',
-        maritalStatus: 'Single',
-        name: user?.name || 'Balaji',
-        email: user?.email || 'balaji@example.in',
+        name: user?.name || '',
+        email: user?.email || '',
+        address: '',
+        dob: '',
+        phone: '',
+        occupation: '',
+        bloodGroup: '',
+        nationality: '',
+        fatherName: '',
+        motherName: '',
+        maritalStatus: '',
+        aadharNumber: user?.aadharNumber || '',
     });
+
+    useEffect(() => {
+        if (user?.id || user?.aadharNumber) {
+            const identifier = user.aadharNumber || user.id;
+            dispatch(fetchCitizenProfile(identifier));
+        }
+    }, [user, dispatch]);
+
+    useEffect(() => {
+        if (profile) {
+            setFormData(prev => ({
+                ...prev,
+                ...profile,
+                name: profile.fullName || prev.name,
+                dob: profile.dateOfBirth || prev.dob,
+                phone: profile.mobile || prev.phone
+            }));
+            setIsNewProfile(false);
+        } else if (error && error.includes('not found')) {
+            setIsNewProfile(true);
+        }
+    }, [profile, error]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        // Validation: Ensure all fields are filled
+        const requiredFields = [
+            { key: 'name', label: 'Full Name' },
+            { key: 'email', label: 'Email' },
+            { key: 'address', label: 'Address' },
+            { key: 'dob', label: 'Date of Birth' },
+            { key: 'phone', label: 'Phone' },
+            { key: 'occupation', label: 'Occupation' },
+            { key: 'bloodGroup', label: 'Blood Group' },
+            { key: 'nationality', label: 'Nationality' },
+            { key: 'fatherName', label: "Father's Name" },
+            { key: 'motherName', label: "Mother's Name" },
+            { key: 'maritalStatus', label: 'Marital Status' },
+            { key: 'aadharNumber', label: 'Aadhar Number' },
+        ];
 
+        const missingFields = requiredFields.filter(f => !formData[f.key]);
+        if (missingFields.length > 0) {
+            alert(`Please fill in all required fields: ${missingFields.map(f => f.label).join(', ')}`);
+            return;
+        }
 
+        try {
+            const payload = {
+                ...formData,
+                fullName: formData.name,
+                dateOfBirth: formData.dob,
+                mobile: formData.phone,
+                residencyStatus: 'ACTIVE'
+            };
 
-        dispatch(loginSuccess({
-            user: { ...user, name: formData.name, email: formData.email },
-            role: 'CITIZEN'
-        }));
+            if (isNewProfile) {
+                await dispatch(enrollCitizen(payload)).unwrap();
+                setIsNewProfile(false);
+            } else {
+                const identifier = profile?.citizenId || formData.citizenId || user.id;
+                await dispatch(updateCitizenProfile({ identifier, data: payload })).unwrap();
+            }
 
-        setIsEditing(false);
+            dispatch(updateUser({
+                name: formData.name,
+                email: formData.email
+            }));
+            setIsEditing(false);
+            alert("Profile updated successfully!");
+        } catch (error) {
+            console.error("Failed to update profile", error);
+            alert("Failed to update profile: " + (error.message || error));
+        }
     };
 
     const handleCancel = () => {
-
+        if (profile) {
+            setFormData(prev => ({
+                ...prev,
+                ...profile,
+                name: profile.fullName || prev.name,
+                dob: profile.dateOfBirth || prev.dob,
+                phone: profile.mobile || prev.phone
+            }));
+        }
         setIsEditing(false);
     };
 
-    const handlePhotoUpload = () => {
-
-
-    };
+    if (loading && !profile) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <FaSpinner className="animate-spin text-3xl text-red-600" />
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
@@ -96,23 +172,31 @@ const CitizenProfile = () => {
                         </div>
 
                         {isEditing ? (
-                            <input
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="text-center font-bold text-gray-900 border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
-                            />
+                            <div className="space-y-1">
+                                <label className="text-[10px] uppercase font-bold text-gray-400 block text-left">Full Name <span className="text-red-500">*</span></label>
+                                <input
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="text-center font-bold text-gray-900 border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                    required
+                                />
+                            </div>
                         ) : (
                             <h2 className="text-xl font-bold text-gray-900">{formData.name}</h2>
                         )}
 
                         {isEditing ? (
-                            <input
-                                name="occupation"
-                                value={formData.occupation}
-                                onChange={handleChange}
-                                className="text-center text-sm text-gray-500 border-b border-gray-300 focus:border-red-500 focus:outline-none w-full mt-2"
-                            />
+                            <div className="space-y-1 mt-2">
+                                <label className="text-[10px] uppercase font-bold text-gray-400 block text-left">Occupation <span className="text-red-500">*</span></label>
+                                <input
+                                    name="occupation"
+                                    value={formData.occupation}
+                                    onChange={handleChange}
+                                    className="text-center text-sm text-gray-500 border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                    required
+                                />
+                            </div>
                         ) : (
                             <p className="text-sm text-gray-500 mb-4">{formData.occupation}</p>
                         )}
@@ -121,34 +205,46 @@ const CitizenProfile = () => {
                             <div className="flex items-center text-sm text-gray-600">
                                 <FaEnvelope size={16} className="mr-2 text-red-500" />
                                 {isEditing ? (
-                                    <input
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
-                                    />
+                                    <div className="flex-1">
+                                        <label className="text-[10px] uppercase font-bold text-gray-400 block">Email <span className="text-red-500">*</span></label>
+                                        <input
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                            required
+                                        />
+                                    </div>
                                 ) : formData.email}
                             </div>
                             <div className="flex items-center text-sm text-gray-600">
                                 <FaPhone size={16} className="mr-2 text-red-500" />
                                 {isEditing ? (
-                                    <PhoneInput
-                                        value={formData.phone}
-                                        onChange={(phone) => setFormData(prev => ({ ...prev, phone }))}
-                                        className="!w-full"
-                                    />
+                                    <div className="flex-1">
+                                        <label className="text-[10px] uppercase font-bold text-gray-400 block">Phone <span className="text-red-500">*</span></label>
+                                        <PhoneInput
+                                            value={formData.phone}
+                                            onChange={(phone) => setFormData(prev => ({ ...prev, phone }))}
+                                            className="!w-full"
+                                            required
+                                        />
+                                    </div>
                                 ) : formData.phone}
                             </div>
                             <div className="flex items-start text-sm text-gray-600">
                                 <FaMapMarkerAlt size={16} className="mr-2 mt-1 text-red-500" />
                                 {isEditing ? (
-                                    <textarea
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
-                                        className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full resize-none"
-                                        rows="2"
-                                    />
+                                    <div className="flex-1">
+                                        <label className="text-[10px] uppercase font-bold text-gray-400 block">Address <span className="text-red-500">*</span></label>
+                                        <textarea
+                                            name="address"
+                                            value={formData.address}
+                                            onChange={handleChange}
+                                            className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full resize-none"
+                                            rows="2"
+                                            required
+                                        />
+                                    </div>
                                 ) : formData.address}
                             </div>
                         </div>
@@ -159,15 +255,17 @@ const CitizenProfile = () => {
                     <Card title="Personal Details">
                         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
                             {[
-                                { label: 'Date of Birth', name: 'dob', type: 'date' },
+                                { label: 'Date of Birth', name: 'dob', type: 'date', required: true },
                                 { label: 'Age', name: 'age', static: formData.dob ? `${calculateAge(formData.dob)} years` : 'N/A', computed: true },
-                                { label: 'Gender', name: 'gender', static: 'Male' },
-                                { label: 'Blood Group', name: 'bloodGroup' },
-                                { label: 'Nationality', name: 'nationality' },
-                                { label: 'Marital Status', name: 'maritalStatus' }
+                                { label: 'Gender', name: 'gender', required: true },
+                                { label: 'Blood Group', name: 'bloodGroup', required: true },
+                                { label: 'Nationality', name: 'nationality', required: true },
+                                { label: 'Marital Status', name: 'maritalStatus', required: true }
                             ].map((field) => (
                                 <div key={field.label}>
-                                    <dt className="text-sm font-medium text-gray-500">{field.label}</dt>
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        {field.label} {field.required && isEditing && <span className="text-red-500">*</span>}
+                                    </dt>
                                     <dd className="mt-1 text-sm text-gray-900">
                                         {field.computed ? (
                                             <span className="font-semibold text-red-700">{field.static}</span>
@@ -179,6 +277,7 @@ const CitizenProfile = () => {
                                                     value={formData[field.name]}
                                                     onChange={handleChange}
                                                     className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                                    required={field.required}
                                                 />
                                             ) : (
                                                 <input
@@ -186,6 +285,7 @@ const CitizenProfile = () => {
                                                     value={formData[field.name]}
                                                     onChange={handleChange}
                                                     className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                                    required={field.required}
                                                 />
                                             )
                                         ) : (
@@ -197,14 +297,41 @@ const CitizenProfile = () => {
                         </dl>
                     </Card>
 
+                    <Card title="Identity Information">
+                        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+                            <div>
+                                <dt className="text-sm font-medium text-gray-500">
+                                    Aadhar Number {isEditing && <span className="text-red-500">*</span>}
+                                </dt>
+                                <dd className="mt-1 text-sm text-gray-900">
+                                    {isEditing ? (
+                                        <input
+                                            name="aadharNumber"
+                                            value={formData.aadharNumber}
+                                            onChange={handleChange}
+                                            maxLength={14}
+                                            placeholder="XXXX XXXX XXXX"
+                                            className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full font-mono tracking-wide"
+                                            required
+                                        />
+                                    ) : (
+                                        <span className="font-mono tracking-wide">{formData.aadharNumber}</span>
+                                    )}
+                                </dd>
+                            </div>
+                        </dl>
+                    </Card>
+
                     <Card title="Family Information">
                         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
                             {[
-                                { label: "Father's Name", name: 'fatherName' },
-                                { label: "Mother's Name", name: 'motherName' }
+                                { label: "Father's Name", name: 'fatherName', required: true },
+                                { label: "Mother's Name", name: 'motherName', required: true }
                             ].map((field) => (
                                 <div key={field.label}>
-                                    <dt className="text-sm font-medium text-gray-500">{field.label}</dt>
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        {field.label} {field.required && isEditing && <span className="text-red-500">*</span>}
+                                    </dt>
                                     <dd className="mt-1 text-sm text-gray-900">
                                         {isEditing ? (
                                             <input
@@ -212,6 +339,7 @@ const CitizenProfile = () => {
                                                 value={formData[field.name]}
                                                 onChange={handleChange}
                                                 className="border-b border-gray-300 focus:border-red-500 focus:outline-none w-full"
+                                                required={field.required}
                                             />
                                         ) : formData[field.name]}
                                     </dd>

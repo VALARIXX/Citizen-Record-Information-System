@@ -1,5 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCitizenProfile } from './citizenSlice';
+import { fetchCitizenRequests } from './certificateSlice';
 import { FaFileAlt, FaUserCheck, FaExclamationCircle, FaArrowRight, FaClock } from 'react-icons/fa';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
@@ -7,19 +9,47 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const CitizenDashboard = () => {
     const { user } = useSelector((state) => state.auth);
+    const { profile } = useSelector((state) => state.citizen);
+    const { requests } = useSelector((state) => state.certificate);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const stats = [
-        { title: 'Identity Status', value: 'Verified', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: FaUserCheck },
-        { title: 'Active Certificates', value: '2 Issued', color: 'text-red-700', bg: 'bg-red-50', icon: FaFileAlt },
-        { title: 'Pending Actions', value: 'None', color: 'text-gray-500', bg: 'bg-gray-100', icon: FaExclamationCircle },
-    ];
+    const [stats, setStats] = React.useState([
+        { title: 'Identity Status', value: '...', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: FaUserCheck },
+        { title: 'Active Certificates', value: '...', color: 'text-red-700', bg: 'bg-red-50', icon: FaFileAlt },
+        { title: 'Pending Actions', value: '...', color: 'text-gray-500', bg: 'bg-gray-100', icon: FaExclamationCircle },
+    ]);
 
-    const recentActivity = [
-        { id: 1, action: 'Birth Certificate Downloaded', date: '2 hours ago', icon: FaFileAlt, color: 'bg-red-50 text-red-700' },
-        { id: 2, action: 'Profile Information Updated', date: '1 day ago', icon: FaUserCheck, color: 'bg-emerald-100 text-emerald-600' },
-        { id: 3, action: 'Login from New Device', date: '3 days ago', icon: FaClock, color: 'bg-gray-100 text-gray-600' },
-    ];
+    const [recentActivity, setRecentActivity] = React.useState([]);
+
+    React.useEffect(() => {
+        if (user?.id || user?.aadharNumber) {
+            const identifier = user.aadharNumber || user.id;
+            dispatch(fetchCitizenProfile(identifier));
+            dispatch(fetchCitizenRequests(user.id));
+        }
+    }, [user, dispatch]);
+
+    React.useEffect(() => {
+        if (profile || requests) {
+            const issuedCerts = (requests || []).filter(c => c.status === 'Issued').length;
+            const pendingCerts = (requests || []).filter(c => c.status === 'PENDING' || c.status === 'Processing').length;
+
+            setStats([
+                { title: 'Identity Status', value: profile ? 'Verified' : 'Not Enrolled', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: FaUserCheck },
+                { title: 'Active Certificates', value: `${issuedCerts} Issued`, color: 'text-red-700', bg: 'bg-red-50', icon: FaFileAlt },
+                { title: 'Pending Actions', value: pendingCerts > 0 ? `${pendingCerts} Pending` : 'None', color: 'text-gray-500', bg: 'bg-gray-100', icon: FaExclamationCircle },
+            ]);
+
+            setRecentActivity((requests || []).slice(0, 3).map(c => ({
+                id: c.requestId,
+                action: `${c.type} ${c.status}`,
+                date: 'Recently',
+                icon: FaFileAlt,
+                color: c.status === 'Issued' ? 'bg-emerald-100 text-emerald-600' : 'bg-yellow-50 text-yellow-600'
+            })));
+        }
+    }, [profile, requests]);
 
     return (
         <div className="space-y-8">
@@ -68,7 +98,7 @@ const CitizenDashboard = () => {
                         <div className="space-y-6">
                             <div className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
                                 <div className="h-16 w-16 rounded-full bg-red-50 flex items-center justify-center text-red-700 font-bold text-2xl mr-4 shadow-sm">
-                                    {user?.name?.charAt(0).toUpperCase()}
+                                    {(user?.name?.charAt(0) || 'U').toUpperCase()}
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-bold text-gray-900">{user?.name}</h3>
@@ -80,11 +110,11 @@ const CitizenDashboard = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-4 rounded-lg bg-gray-50 border border-gray-100 hover:border-red-200 transition-colors cursor-pointer group">
                                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Voting District</p>
-                                    <p className="font-medium text-gray-900 group-hover:text-red-700 transition-colors">Sholinganallur, Zone 15 (Chennai)</p>
+                                    <p className="font-medium text-gray-900 group-hover:text-red-700 transition-colors">Not Set</p>
                                 </div>
                                 <div className="p-4 rounded-lg bg-gray-50 border border-gray-100 hover:border-red-200 transition-colors cursor-pointer group">
                                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Tax Status</p>
-                                    <p className="font-medium text-gray-900 group-hover:text-red-700 transition-colors">Filing Complete (2024)</p>
+                                    <p className="font-medium text-gray-900 group-hover:text-red-700 transition-colors">No Records Found</p>
                                 </div>
                             </div>
                         </div>

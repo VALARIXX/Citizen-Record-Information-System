@@ -88,7 +88,7 @@ const Header = ({ onMenuClick }) => {
                                 className="flex items-center gap-3 p-1.5 px-2 rounded-xl border border-gray-100 bg-white/50 hover:bg-white hover:border-red-100 hover:shadow-sm transition-all duration-200 group focus:outline-none"
                             >
                                 <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white text-xs font-bold shadow-sm group-hover:scale-105 transition-transform">
-                                    {user?.name?.charAt(0).toUpperCase()}
+                                    {(user?.name?.charAt(0) || 'U').toUpperCase()}
                                 </div>
                                 <div className="text-left">
                                     <div className="text-xs font-bold text-gray-900 leading-tight group-hover:text-red-700 transition-colors">
@@ -104,7 +104,7 @@ const Header = ({ onMenuClick }) => {
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="19 9l-7 7-7-7" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
 

@@ -19,13 +19,22 @@ const EnrollmentForm = () => {
                             <FaUserPlus size={18} className="mr-2" /> Personal Information
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="First Name" id="firstName" />
-                            <Input label="Last Name" id="lastName" />
-                            <Input label="Date of Birth" id="dob" type="date" />
+                            <Input label={<>First Name <span className="text-red-500">*</span></>} id="firstName" required />
+                            <Input label={<>Last Name <span className="text-red-500">*</span></>} id="lastName" required />
+                            <Input
+                                label={<>Aadhar Number <span className="text-red-500">*</span></>}
+                                id="aadharNumber"
+                                placeholder="XXXX XXXX XXXX"
+                                required
+                                maxLength={12}
+                                pattern="\d{12}"
+                                onChange={(e) => e.target.value = e.target.value.replace(/\D/g, '').slice(0, 12)}
+                            />
+                            <Input label={<>Date of Birth <span className="text-red-500">*</span></>} id="dob" type="date" required />
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                                <select className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
-                                    <option>Select Gender</option>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Gender <span className="text-red-500">*</span></label>
+                                <select required className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                                    <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                     <option value="Transgender">Transgender</option>
@@ -37,11 +46,11 @@ const EnrollmentForm = () => {
                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
                         <h3 className="text-md font-medium text-gray-900 mb-2">Residency Details</h3>
                         <div className="grid grid-cols-1 gap-6">
-                            <Input label="House No, Street Address" id="address" placeholder="e.g. 45, Anna Salai" />
+                            <Input label={<>House No, Street Address <span className="text-red-500">*</span></>} id="address" placeholder="e.g. 45, Anna Salai" required />
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <Input label="City / Town" id="city" placeholder="e.g. Chennai" />
-                                <Input label="State" id="state" placeholder="e.g. Tamil Nadu" />
-                                <Input label="Pincode" id="zip" placeholder="e.g. 600017" />
+                                <Input label={<>City / Town <span className="text-red-500">*</span></>} id="city" placeholder="e.g. Chennai" required />
+                                <Input label={<>State <span className="text-red-500">*</span></>} id="state" placeholder="e.g. Tamil Nadu" required />
+                                <Input label={<>Pincode <span className="text-red-500">*</span></>} id="zip" placeholder="e.g. 600017" required />
                             </div>
                         </div>
                     </div>

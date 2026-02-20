@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import api from '../../utils/api';
 import { FaCreditCard, FaGooglePay, FaUniversity, FaLock, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 
 const PaymentPage = () => {
+    const { profile } = useSelector((state) => state.citizen);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
@@ -15,25 +18,39 @@ const PaymentPage = () => {
     const [selectedMethod, setSelectedMethod] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const handlePayment = () => {
+    const handlePayment = async () => {
         if (!selectedMethod) return;
 
         setIsProcessing(true);
 
-        // Simulate payment gateway delay
-        setTimeout(() => {
-            setIsProcessing(false);
+        const transactionId = 'TXN' + Date.now();
+        const payload = {
+            citizenId: profile?.citizenId || user?.id || 'GUEST',
+            requestId: requestId,
+            amount: parseFloat(amount),
+            paymentMethod: selectedMethod,
+            status: 'SUCCESS', // Sandbox: Assume success
+            transactionId: transactionId
+        };
+
+        try {
+            await api.post('/api/payments/initiate', payload);
+
             // Navigate to success page
             navigate('/citizen/payment/success', {
                 state: {
                     requestId,
                     type,
                     amount,
-                    transactionId: 'TXN' + Date.now(),
+                    transactionId: transactionId,
                     date: new Date().toLocaleDateString()
                 }
             });
-        }, 2000);
+        } catch (error) {
+            console.error("Payment failed", error);
+            alert("Payment processing failed. Please try again.");
+            setIsProcessing(false);
+        }
     };
 
     return (

@@ -1,20 +1,24 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 const ProtectedRoute = ({ allowedRoles }) => {
     const { isAuthenticated, role } = useSelector((state) => state.auth);
+    const location = useLocation();
 
     if (!isAuthenticated) {
         return <Navigate to="/" replace />;
     }
 
     if (allowedRoles && !allowedRoles.includes(role)) {
-        if (role === 'ADMIN') return <Navigate to="/admin" replace />;
-        if (role === 'OFFICER') return <Navigate to="/census" replace />;
-        return <Navigate to="/citizen" replace />;
+        if (role === 'ADMIN' && location.pathname !== '/admin') return <Navigate to="/admin" replace />;
+        if (role === 'OFFICER' && location.pathname !== '/census') return <Navigate to="/census" replace />;
+        if (role === 'CITIZEN' && location.pathname !== '/citizen') return <Navigate to="/citizen" replace />;
+
+        // If role is unknown or we are already at the mis-matched path, go to landing
+        return <Navigate to="/" replace />;
     }
 
     return (

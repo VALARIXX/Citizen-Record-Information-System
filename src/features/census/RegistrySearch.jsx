@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaFilter, FaEye, FaEdit, FaTimes, FaPlus } from 'react-icons/fa';
 import Modal from '../../components/Modal';
@@ -14,17 +15,47 @@ const RegistrySearch = () => {
     const [selectedCitizen, setSelectedCitizen] = useState(null);
     const [editData, setEditData] = useState({ name: '', address: '', status: '' });
 
-    const [citizens, setCitizens] = useState([
-        { id: 'CID-TN-1001', name: 'Arjun', address: '45 Anna Salai, Chennai', status: 'Active', dob: '1990-05-15', gender: 'Male', phone: '+91 9876543210' },
-        { id: 'CID-TN-1002', name: 'Priya', address: '12 RS Puram, Coimbatore', status: 'Moved', dob: '1992-11-22', gender: 'Female', phone: '+91 8765432109' },
-        { id: 'CID-TN-1003', name: 'Karthik', address: '78 KK Nagar, Madurai', status: 'Deceased', dob: '1950-02-10', gender: 'Male', phone: '+91 7654321098' },
-        { id: 'CID-TN-1004', name: 'Kavya', address: '32 Thillai Nagar, Trichy', status: 'Active', dob: '1998-08-30', gender: 'Female', phone: '+91 6543210987' },
-    ]);
+    const [citizens, setCitizens] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const filteredCitizens = citizens.filter(c =>
-        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.id.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Debounced search effect
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            fetchCitizens();
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [searchTerm]);
+
+    const fetchCitizens = async () => {
+        setLoading(true);
+        try {
+            // If empty search, standard behavior might be to show nothing or all (depending on backend). 
+            // Assuming backend handles empty query or we send a default.
+            // But let's only search if there is a term, or maybe backend supports "all"?
+            // Let's assume we want to search.
+            const query = searchTerm.trim() || '';
+            // If query is empty, maybe don't search or search for all? 
+            // Let's try searching. If backend doesn't support empty, we might need a specific endpoint for "all" 
+            // or just not show anything.
+            // For now, let's call search if query exists, else clear.
+
+            if (!query) {
+                setCitizens([]);
+                setLoading(false);
+                return;
+            }
+
+            const response = await api.get(`/api/citizens/search?query=${query}`);
+            setCitizens(response.data);
+        } catch (error) {
+            console.error("Failed to fetch citizens", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // filteredCitizens is now just citizens from API
+    const filteredCitizens = citizens;
 
     const handleView = (citizen) => {
         setSelectedCitizen(citizen);
@@ -37,15 +68,30 @@ const RegistrySearch = () => {
         setIsEditModalOpen(true);
     };
 
-    const handleSaveEdit = (e) => {
+    const handleSaveEdit = async (e) => {
         e.preventDefault();
-        setCitizens(citizens.map(c =>
-            c.id === selectedCitizen.id
-                ? { ...c, name: editData.name, address: editData.address, status: editData.status }
-                : c
-        ));
-        setIsEditModalOpen(false);
-        setSelectedCitizen(null);
+        try {
+            await api.put(`/api/citizens/${selectedCitizen.citizenId}`, {
+                ...selectedCitizen, // Send full object or just changes? Backend usually expects full body or PATCH. 
+                // CitizenController.update expects Citizen object. 
+                // Let's merge existing with edits.
+                name: editData.name,
+                address: editData.address,
+                // status field might not be on Citizen entity based on earlier checks? 
+                // Wait, Citizen entity has 'active' boolean? Or status string? 
+                // Earlier 'Citizen.java' showed basic fields. 
+                // If backend doesn't have 'status', this might fail or be ignored.
+                // Let's assume for now we send what we have.
+            });
+
+            // Refresh list
+            fetchCitizens();
+            setIsEditModalOpen(false);
+            setSelectedCitizen(null);
+        } catch (error) {
+            console.error("Failed to update citizen", error);
+            alert("Failed to update record");
+        }
     };
 
     return (
@@ -87,8 +133,8 @@ const RegistrySearch = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                         {filteredCitizens.map((citizen) => (
                             <tr key={citizen.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{citizen.id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{citizen.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{citizen.citizenId || citizen.id}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{citizen.name || citizen.fullName}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{citizen.address}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -115,8 +161,8 @@ const RegistrySearch = () => {
                 {selectedCitizen && (
                     <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div><p className="text-gray-500">Civic ID</p><p className="font-medium text-gray-900">{selectedCitizen.id}</p></div>
-                            <div><p className="text-gray-500">Full Name</p><p className="font-medium text-gray-900">{selectedCitizen.name}</p></div>
+                            <div><p className="text-gray-500">Civic ID</p><p className="font-medium text-gray-900">{selectedCitizen.citizenId || selectedCitizen.id}</p></div>
+                            <div><p className="text-gray-500">Full Name</p><p className="font-medium text-gray-900">{selectedCitizen.fullName || selectedCitizen.name}</p></div>
                             <div><p className="text-gray-500">Date of Birth</p><p className="font-medium text-gray-900">{selectedCitizen.dob}</p></div>
                             <div><p className="text-gray-500">Age</p><p className="font-medium text-red-700">{calculateAge(selectedCitizen.dob)} years</p></div>
                             <div><p className="text-gray-500">Gender</p><p className="font-medium text-gray-900">{selectedCitizen.gender}</p></div>

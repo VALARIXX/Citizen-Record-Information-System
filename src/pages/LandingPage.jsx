@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginSuccess } from '../features/auth/authSlice';
-import { FaLayerGroup, FaShieldAlt, FaArrowRight, FaUserPlus, FaSignInAlt, FaCheckCircle } from 'react-icons/fa';
+import { loginUser, registerUser, clearError } from '../features/auth/authSlice';
+import { FaLayerGroup, FaShieldAlt, FaArrowRight, FaUserPlus, FaSignInAlt, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import PhoneInput from '../components/PhoneInput';
 import { USERS } from '../data/loginCredentials';
@@ -11,7 +11,7 @@ import Modal from '../components/Modal';
 const LandingPage = () => {
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [showAuthForm, setShowAuthForm] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const { loading, error } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -41,73 +41,82 @@ const LandingPage = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        setLoading(true);
         setLoginError('');
+        dispatch(clearError());
 
-        setTimeout(() => {
-            const foundUser = USERS.find(u => u.email === loginEmail && u.password === loginPassword);
-
-            if (foundUser) {
-                dispatch(loginSuccess({
-                    user: {
-                        name: foundUser.name,
-                        email: foundUser.email,
-                        id: foundUser.id,
-                    },
-                    role: foundUser.role,
-                }));
-
-                const role = foundUser.role;
+        dispatch(loginUser({ email: loginEmail, password: loginPassword }))
+            .unwrap()
+            .then((userData) => {
+                const role = userData.role;
+                setShowAuthForm(false);
                 if (role === 'ADMIN') navigate('/admin');
                 else if (role === 'OFFICER') navigate('/census');
                 else navigate('/citizen');
-            } else {
-                setLoginError('Invalid email or password');
-            }
-
-            setLoading(false);
-        }, 1000);
+            })
+            .catch((err) => {
+                const errorMessage = typeof err === 'string' ? err : (err?.message || 'Invalid credentials');
+                setLoginError(errorMessage);
+            });
     };
 
     const handleRegister = (e) => {
         e.preventDefault();
         setRegisterError('');
         setRegisterSuccess('');
+        dispatch(clearError());
 
         if (registerData.password !== registerData.confirmPassword) {
             setRegisterError('Passwords do not match');
             return;
         }
 
-        setLoading(true);
-
-        setTimeout(() => {
-            // Mock successful registration
-            setLoading(false);
-            setRegisterSuccess('Account created successfully! Please sign in.');
-
-            // Clear form after success
-            setRegisterData({
-                name: '',
-                aadharNumber: '',
-                email: '',
-                phone: '',
-                password: '',
-                confirmPassword: ''
+        dispatch(registerUser({
+            username: registerData.name,
+            email: registerData.email,
+            password: registerData.password,
+            role: 'Citizen', // Default role
+            aadharNumber: registerData.aadharNumber,
+            phoneNumber: registerData.phone
+        }))
+            .unwrap()
+            .then(() => {
+                setRegisterSuccess('Account created successfully! Please sign in.');
+                setRegisterData({
+                    name: '',
+                    aadharNumber: '',
+                    email: '',
+                    phone: '',
+                    password: '',
+                    confirmPassword: ''
+                });
+                setTimeout(() => {
+                    setIsLoginMode(true);
+                    setRegisterSuccess('');
+                }, 2000);
+            })
+            .catch((err) => {
+                let errorMessage = 'Registration failed';
+                if (typeof err === 'string') {
+                    errorMessage = err;
+                } else if (err?.message) {
+                    errorMessage = err.message;
+                } else if (err?.error) {
+                    errorMessage = err.error; // Fallback for Spring Boot default error
+                } else {
+                    errorMessage = JSON.stringify(err); // Last resort
+                }
+                setRegisterError(errorMessage);
             });
-
-            // Optional: Switch to login mode after a delay
-            setTimeout(() => {
-                setIsLoginMode(true);
-                setRegisterSuccess('');
-            }, 2000);
-
-        }, 1200);
     };
 
     const handleRegisterChange = (e) => {
         const { name, value } = e.target;
-        setRegisterData(prev => ({ ...prev, [name]: value }));
+        if (name === 'aadharNumber') {
+            const val = value.replace(/\D/g, '').slice(0, 12);
+            setRegisterData(prev => ({ ...prev, [name]: val }));
+        } else {
+            setRegisterData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     return (
@@ -260,6 +269,7 @@ const LandingPage = () => {
                                 >
                                     {loading ? 'Accessing...' : 'Access Portal'}
                                     {!loading && <FaArrowRight size={18} />}
+                                    {loading && <FaSpinner size={18} className="animate-spin" />}
                                 </button>
 
                                 <div className="text-center pt-2">
@@ -282,7 +292,7 @@ const LandingPage = () => {
                                 )}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-1 text-left">
-                                        <label className="text-sm font-medium text-gray-700">User Name</label>
+                                        <label className="text-sm font-medium text-gray-700">User Name <span className="text-red-500">*</span></label>
                                         <input
                                             type="text"
                                             name="name"
@@ -294,7 +304,7 @@ const LandingPage = () => {
                                         />
                                     </div>
                                     <div className="space-y-1 text-left">
-                                        <label className="text-sm font-medium text-gray-700">Aadhar Number</label>
+                                        <label className="text-sm font-medium text-gray-700">Aadhar Number <span className="text-red-500">*</span></label>
                                         <input
                                             type="text"
                                             name="aadharNumber"
@@ -311,7 +321,7 @@ const LandingPage = () => {
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-1 text-left">
-                                        <label className="text-sm font-medium text-gray-700">Email</label>
+                                        <label className="text-sm font-medium text-gray-700">Email <span className="text-red-500">*</span></label>
                                         <input
                                             type="email"
                                             name="email"
@@ -323,7 +333,7 @@ const LandingPage = () => {
                                         />
                                     </div>
                                     <div className="space-y-1 text-left">
-                                        <label className="text-sm font-medium text-gray-700">Phone</label>
+                                        <label className="text-sm font-medium text-gray-700">Phone <span className="text-red-500">*</span></label>
                                         <PhoneInput
                                             value={registerData.phone}
                                             onChange={(phone) => setRegisterData(prev => ({ ...prev, phone }))}
@@ -333,7 +343,7 @@ const LandingPage = () => {
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-1 text-left">
-                                        <label className="text-sm font-medium text-gray-700">Password</label>
+                                        <label className="text-sm font-medium text-gray-700">Password <span className="text-red-500">*</span></label>
                                         <input
                                             type="password"
                                             name="password"
@@ -345,7 +355,7 @@ const LandingPage = () => {
                                         />
                                     </div>
                                     <div className="space-y-1 text-left">
-                                        <label className="text-sm font-medium text-gray-700">Confirm Password</label>
+                                        <label className="text-sm font-medium text-gray-700">Confirm Password <span className="text-red-500">*</span></label>
                                         <input
                                             type="password"
                                             name="confirmPassword"

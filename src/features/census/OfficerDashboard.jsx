@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import api from '../../utils/api';
 import { FaUsers, FaFileAlt, FaCheckCircle, FaClock, FaSearch, FaArrowRight } from 'react-icons/fa';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
@@ -15,11 +16,24 @@ const OfficerDashboard = () => {
         { title: 'Processed Today', value: '8', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: FaCheckCircle },
     ];
 
-    const upcomingTasks = [
-        { id: 1, type: 'Birth Certificate', citizen: 'Ram Kumar', status: 'Verification Pending', time: '1 hr ago' },
-        { id: 2, type: 'Death Certificate', citizen: 'Lakshmi', status: 'Ready for Review', time: '3 hrs ago' },
-        { id: 3, type: 'Marriage Certificate', citizen: 'Sivakumar', status: 'In Progress', time: '5 hrs ago' },
-    ];
+    const [recentTasks, setRecentTasks] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        fetchPendingTasks();
+    }, []);
+
+    const fetchPendingTasks = async () => {
+        setLoading(true);
+        try {
+            const response = await api.get('/api/certificates/pending');
+            setRecentTasks(response.data);
+        } catch (error) {
+            console.error("Failed to fetch pending tasks", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="space-y-8">
@@ -28,7 +42,7 @@ const OfficerDashboard = () => {
                     <h1 className="text-3xl font-bold text-yellow-500">Welcome, Officer {user?.name}</h1>
                     <p className="mt-2 text-red-100 max-w-xl">
                         Management of the citizen registry and service requests.
-                        You have {stats[1].value} tasks requiring your attention today.
+                        You have {recentTasks.length} tasks requiring your attention today.
                     </p>
                     <div className="mt-6 flex gap-3">
                         <Button onClick={() => navigate('/census/search')} className="bg-yellow-500 text-red-900 hover:bg-red-100">
@@ -83,18 +97,23 @@ const OfficerDashboard = () => {
                 <div className="lg:col-span-1">
                     <Card title="Pending Approvals" className="border-0 shadow-soft">
                         <div className="space-y-4">
-                            {upcomingTasks.map((task) => (
-                                <div key={task.id} className="pb-4 border-b border-gray-100 last:border-0">
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <p className="text-sm font-bold text-gray-900">{task.type}</p>
-                                            <p className="text-xs text-gray-500">{task.citizen}</p>
+                            {loading ? <p className="text-sm text-gray-500 text-center py-4">Loading tasks...</p> : (
+                                recentTasks.length === 0 ? <p className="text-sm text-gray-500 text-center py-4">No pending tasks.</p> :
+                                    recentTasks.slice(0, 5).map((task) => (
+                                        <div key={task.id} className="pb-4 border-b border-gray-100 last:border-0">
+                                            <div className="flex justify-between items-start">
+                                                <div>
+                                                    <p className="text-sm font-bold text-gray-900">{task.type}</p>
+                                                    <p className="text-xs text-gray-500">Req ID: #{task.requestId}</p>
+                                                </div>
+                                                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-yellow-100 text-yellow-800">
+                                                    {task.status}
+                                                </span>
+                                            </div>
+                                            <p className="mt-1 text-xs text-red-700 font-medium">Citizen ID: {task.citizenId}</p>
                                         </div>
-                                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-yellow-100 text-yellow-800">{task.time}</span>
-                                    </div>
-                                    <p className="mt-1 text-xs text-red-700 font-medium">{task.status}</p>
-                                </div>
-                            ))}
+                                    ))
+                            )}
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                             <Link to="/census/tasks" className="flex items-center justify-center text-sm font-medium text-red-700 hover:text-red-800">
